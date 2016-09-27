@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <IncludePath>D:\Program Files %28x86%29\OpenCV\otherlibs\highgui;D:\Program Files %28x86%29\OpenCV\cv\include;D:\Program Files %28x86%29\OpenCV\cvaux\include;D:\Program Files %28x86%29\OpenCV\cxcore\include;D:\Program Files %28x86%29\OpenCV\ml\include;D:\Program Files %28x86%29\OpenCV\otherlibs\_graphics\include;D:\Program Files %28x86%29\OpenCV\otherlibs\cvcam\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LibraryPath>D:\Program Files %28x86%29\OpenCV\lib;$(LibraryPath)</LibraryPath>
+    <SourcePath>D:\Program Files (x86)\OpenCV\ml\src;D:\Program Files (x86)\OpenCV\cvaux\src;D:\Program Files (x86)\OpenCV\cxcore\src;D:\Program Files (x86)\OpenCV\cv\src;D:\Program Files (x86)\OpenCV\otherlibs\highgui;D:\Program Files %28x86%29\OpenCV\otherlibs\_graphics\src;$(SourcePath)</SourcePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalDependencies>cxcore.lib;cv.lib;ml.lib;cvaux.lib;highgui.lib;cvcam.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>

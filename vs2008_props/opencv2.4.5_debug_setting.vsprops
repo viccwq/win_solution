@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="gb2312"?>
+<VisualStudioPropertySheet
+	ProjectType="Visual C++"
+	Version="8.00"
+	Name="opencv2.4.5_debug_setting"
+	>
+	<Tool
+		Name="VCCLCompilerTool"
+		AdditionalIncludeDirectories="D:\opencv2.4.5\opencv\build\include;D:\opencv2.4.5\opencv\build\include\opencv;D:\opencv2.4.5\opencv\build\include\opencv2"
+	/>
+	<Tool
+		Name="VCLinkerTool"
+		AdditionalDependencies="opencv_features2d245d.lib opencv_highgui245d.lib opencv_core245d.lib opencv_imgproc245d.lib opencv_ml245d.lib opencv_objdetect245d.lib opencv_video245d.lib opencv_contrib245d.lib opencv_calib3d245d.lib opencv_flann245d.lib opencv_gpu245d.lib opencv_legacy245d.lib opencv_ts245d.lib"
+		AdditionalLibraryDirectories="D:\opencv2.4.5\opencv\build\x86\vc9\lib"
+	/>
+</VisualStudioPropertySheet>
