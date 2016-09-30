@@ -23,7 +23,12 @@ static int read_data_from_file_ascii(char *file_name, int **data, int *data_len)
 	int read_line = 0;
 	while(fgets(buffer, MAX_LENTH, fp) != NULL)
 	{
-		read_data = atoi(buffer);
+		if (buffer[0] == '0' && buffer[1] == 'X')
+			sscanf(buffer, "0X%x", &read_data);
+		if (buffer[0] == '0' && buffer[1] == 'x')
+			sscanf(buffer, "0x%x", &read_data);
+		else
+			read_data = atoi(buffer);
 		*(*data + read_line) = read_data;
 //		printf("No.%d:%d\n", read_line, read_data);
 		read_line++;
@@ -63,13 +68,13 @@ static int read_data_from_file_ascii(char *file_name, int **data, int *data_len)
 }
 
 
-int dat_to_image(char *file_name)
+int dat_to_image_16u(char *file_name, CvSize size)
 {
 	int *data = NULL, data_temp;
 	int data_len;
 	read_data_from_file_ascii(file_name, &data, &data_len);
 	int index = 0;
-	IplImage *p_image = cvCreateImage(cvSize(1440, 800), IPL_DEPTH_16U, 1);
+	IplImage *p_image = cvCreateImage(size, IPL_DEPTH_16U, 1);
 	cvSetZero(p_image);
 	int i, j;
 	unsigned short *img_data;
@@ -87,6 +92,48 @@ int dat_to_image(char *file_name)
 	cvNamedWindow(file_name);
 	cvShowImage(file_name, p_image);
 	cvWaitKey();
+	char fall_name[128] = {0};
+	sprintf(fall_name, "%s.bmp", file_name);
+	cvSaveImage(fall_name, p_image);
+	cvDestroyWindow(file_name);
+	cvReleaseImage(&p_image);
+
+	if (NULL != data)
+	{
+		free(data);
+		data = NULL;
+	}
+	return 0;
+}
+
+
+int dat_to_image_8u(char *file_name, CvSize size)
+{
+	int *data = NULL, data_temp;
+	int data_len;
+	read_data_from_file_ascii(file_name, &data, &data_len);
+	int index = 0;
+	IplImage *p_image = cvCreateImage(size, IPL_DEPTH_8U, 1);
+	cvSetZero(p_image);
+	int i, j;
+	unsigned char *img_data;
+	for (i = 0; i < p_image->height; i++)
+	{
+		img_data = (unsigned char *)(p_image->imageData + i * p_image->widthStep);
+		for (j = 0; j < p_image->width; j++)
+		{
+			data_temp = *(data + index);
+			index ++;
+			*(img_data + j) = (unsigned char)data_temp;
+// 			CV_IMAGE_ELEM(p_image, unsigned short, i, j) = (unsigned short)data_temp;
+		}
+	}
+	cvNamedWindow(file_name);
+	cvShowImage(file_name, p_image);
+	cvWaitKey();
+	char fall_name[128] = {0};
+	sprintf(fall_name, "%s.bmp", file_name);
+	cvSaveImage(fall_name, p_image);
 	cvDestroyWindow(file_name);
 	cvReleaseImage(&p_image);
 
@@ -183,8 +230,9 @@ int img_to_hex(char *file_name)
 	}
 	else
 		;
-
-	generate_h_file(p_image, ".//dsp_image.h");
+	char fall_name[128] = {0};
+	sprintf(fall_name, "%s.h", file_name);
+	generate_h_file(p_image, fall_name);
 
 	
 	cvReleaseImage(&p_image);
@@ -215,7 +263,17 @@ int main(int argc, char *argv[])
 
 	if (!strcmp(argv[1], "-f"))
 	{
-		dat_to_image(argv[2]);
+		CvSize size;
+		int depth = 0;
+		size.height = 0;
+		size.width = 0;
+		printf("please input the depth, width, height:");
+		scanf("%d,%d,%d", &depth, &size.width, &size.height);
+		printf("depth:%d, width:%d, height:%d\n", depth, size.width, size.height);
+		if (depth == 8)
+			dat_to_image_8u(argv[2], size);
+		else
+			dat_to_image_16u(argv[2], size);
 	}
 	else if (!strcmp(argv[1], "-v"))
 	{
