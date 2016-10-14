@@ -124,11 +124,68 @@ void lawsTexture(cv::Mat &img_src, cv::Mat &img_dst)
 			p_mat_dst[index] = new cv::Mat;
 			cv::filter2D(img_src, *p_mat_dst[index], -1, mat_tran * (*p_mat[j]));
 			//¾ø¶ÔÖµ
-			*p_mat_dst[index] = cv::abs(*p_mat_dst[index]);
-			showImage(*p_mat_dst[index], 800);
+//			*p_mat_dst[index] = cv::abs(*p_mat_dst[index]);
+			cv::threshold(*p_mat_dst[index], *p_mat_dst[index], 0, 255, THRESH_TOZERO);
+			
+/*
+			if (8 == index ||
+				12 == index ||
+				13 == index ||
+				18 == index)
+				cv::medianBlur(*p_mat_dst[index], *p_mat_dst[index], 3);
+*/
+//			cv::GaussianBlur(*p_mat_dst[index], *p_mat_dst[index], cv::Size(5, 5), 2, 2);
+			cv::GaussianBlur(*p_mat_dst[index], *p_mat_dst[index], cv::Size(3, 3), 1, 1);
+//			showImage( *p_mat_dst[index], 0);
 		}
 	}
+	//ÇóÆ½¾ùÖµ
+	cv::Mat img_average(img_src.size(), CV_32FC1, cv::Scalar(0, 0, 0));
 
+#if 0
+	//	cv::accumulate(*p_mat_dst[2], img_average); //ÅÅ³ý
+	//	cv::accumulate(*p_mat_dst[7], img_average);
+	cv::accumulate(*p_mat_dst[8], img_average);
+	cv::accumulate(*p_mat_dst[9], img_average);
+	cv::accumulate(*p_mat_dst[11], img_average);
+	cv::accumulate(*p_mat_dst[12], img_average);
+	cv::accumulate(*p_mat_dst[12], img_average);
+	cv::accumulate(*p_mat_dst[12], img_average);
+	cv::accumulate(*p_mat_dst[13], img_average);
+	//	cv::accumulate(*p_mat_dst[14], img_average); //ÅÅ³ý
+	//	cv::accumulate(*p_mat_dst[16], img_average);
+	cv::accumulate(*p_mat_dst[17], img_average);
+	cv::accumulate(*p_mat_dst[17], img_average);
+	cv::accumulate(*p_mat_dst[18], img_average);
+	cv::accumulate(*p_mat_dst[19], img_average);
+	img_average = img_average / 11;
+#elif 1 //×îÔç
+//	cv::accumulate(*p_mat_dst[2], img_average); //ÅÅ³ý
+//	cv::accumulate(*p_mat_dst[7], img_average);
+	cv::accumulate(*p_mat_dst[8], img_average);
+	cv::accumulate(*p_mat_dst[12], img_average);
+	cv::accumulate(*p_mat_dst[13], img_average);
+//	cv::accumulate(*p_mat_dst[14], img_average); //ÅÅ³ý
+//	cv::accumulate(*p_mat_dst[16], img_average);
+//	cv::accumulate(*p_mat_dst[17], img_average);
+	cv::accumulate(*p_mat_dst[18], img_average);
+	img_average = img_average / 4;
+#else
+//	cv::accumulate(*p_mat_dst[2], img_average); //ÅÅ³ý
+//	cv::accumulate(*p_mat_dst[7], img_average);
+	cv::accumulate(*p_mat_dst[8], img_average);
+	cv::accumulate(*p_mat_dst[12], img_average);
+	cv::accumulate(*p_mat_dst[12], img_average);
+	cv::accumulate(*p_mat_dst[13], img_average);
+//	cv::accumulate(*p_mat_dst[14], img_average); //ÅÅ³ý
+//	cv::accumulate(*p_mat_dst[16], img_average);
+//	cv::accumulate(*p_mat_dst[17], img_average);
+	cv::accumulate(*p_mat_dst[19], img_average);
+	img_average = img_average / 5;
+#endif
+	img_average.convertTo(img_average, CV_8U);
+	//Í¼Ïñ·Ö¸î
+	cv::threshold(img_average, img_dst, 0, 255, CV_THRESH_OTSU);
 
 	for (int i = 0; i < 25; i++)
 	{

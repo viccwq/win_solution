@@ -48,4 +48,5 @@ private:
 public:
 	afx_msg void OnBnClickedButtonSave();
 	CString m_file_dst;
+	afx_msg void OnClickedButtonProc();
 };

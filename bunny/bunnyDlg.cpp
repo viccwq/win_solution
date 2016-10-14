@@ -72,6 +72,7 @@ BEGIN_MESSAGE_MAP(CbunnyDlg, CDialogEx)
 	ON_WM_CLOSE()
 	ON_WM_DESTROY()
 	ON_BN_CLICKED(IDC_BUTTON_SAVE, &CbunnyDlg::OnBnClickedButtonSave)
+	ON_BN_CLICKED(IDC_BUTTON_PROC, &CbunnyDlg::OnClickedButtonProc)
 END_MESSAGE_MAP()
 
 
@@ -290,4 +291,22 @@ void CbunnyDlg::OnBnClickedButtonSave()
 	// TODO: Add your control notification handler code here
 	m_file_dst = m_file_src + ".bmp";
 	cv::imwrite(m_file_dst.GetBuffer(0), image_src);
+}
+
+//bunny data resource down load
+//http://graphics.stanford.edu/data/voldata/bunny-ctscan.tar.gz
+void CbunnyDlg::OnClickedButtonProc()
+{
+	// TODO: Add your control notification handler code here
+	CString file_name;
+	for (int i = 1; i < 362; i++)
+	{
+		file_name.Format("%d", i);
+		getBunny((LPSTR)(LPCSTR)("./img_bunny_all/" + file_name), image_src, image_dst);
+		printf("\"%s\" is in processing\n", file_name.GetBuffer(0));
+		m_file_src = "./img_bunny_all/src/" + file_name + ".bmp";
+		m_file_dst = "./img_bunny_all/bin/" + file_name + "_bin.bmp";
+		cv::imwrite(m_file_src.GetBuffer(0), image_src);
+		cv::imwrite(m_file_dst.GetBuffer(0), image_dst);
+	}
 }

@@ -55,10 +55,11 @@ void Bunny::procImage()
 	cv::Mat image_temp;
 	cv::GaussianBlur(m_imageSrc, image_temp, cv::Size(5, 5), 2, 2);
 	cv::pyrDown(m_imageSrc, image_temp);
-	cv::medianBlur(image_temp, m_imageDst, 3);
+//	cv::medianBlur(image_temp, m_imageDst, 3);
 // 	lbp<UINT8>(image_temp, m_imageDst);
 //  cv::Laplacian(image_temp, image_dst, CV_8U, 3);
-	lawsTexture(image_temp, m_imageSrc);
+	lawsTexture(image_temp, m_imageDst);
+//	showImage(m_imageDst, 0);
 }
 
 
