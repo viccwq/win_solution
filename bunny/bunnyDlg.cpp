@@ -52,14 +52,14 @@ CbunnyDlg::CbunnyDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CbunnyDlg::IDD, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
-	m_file_src = _T("");
+	m_file_get = _T("");
 	m_file_dst = _T("");
 }
 
 void CbunnyDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_EDIT_SRC, m_file_src);
+	DDX_Text(pDX, IDC_EDIT_SRC, m_file_get);
 	DDX_Text(pDX, IDC_TEXT_DST, m_file_dst);
 }
 
@@ -262,7 +262,7 @@ void CbunnyDlg::OnBnClickedButtonStart()
 {
 	// TODO: Add your control notification handler code here
 	// TODO: Add your control notification handler code here
-	std::string str = m_file_src.GetBuffer(0); 
+	std::string str = m_file_get.GetBuffer(0); 
 	/************************************************************************/
 /*
 	image_src = cv::imread(str ,1); //œ‘ æÕº∆¨	
@@ -289,8 +289,10 @@ void CbunnyDlg::OnDestroy()
 void CbunnyDlg::OnBnClickedButtonSave()
 {
 	// TODO: Add your control notification handler code here
-	m_file_dst = m_file_src + ".bmp";
+	m_file_src = m_file_get + ".bmp";
+	m_file_dst = m_file_get + "_pro.bmp";
 	cv::imwrite(m_file_dst.GetBuffer(0), image_src);
+	cv::imwrite(m_file_dst.GetBuffer(0), image_dst);
 }
 
 //bunny data resource down load
@@ -305,7 +307,7 @@ void CbunnyDlg::OnClickedButtonProc()
 		getBunny((LPSTR)(LPCSTR)("./img_bunny_all/" + file_name), image_src, image_dst);
 		printf("\"%s\" is in processing\n", file_name.GetBuffer(0));
 		m_file_src = "./img_bunny_all/src/" + file_name + ".bmp";
-		m_file_dst = "./img_bunny_all/bin/" + file_name + "_bin.bmp";
+		m_file_dst = "./img_bunny_all/bin/" + file_name + "_pro.bmp";
 		cv::imwrite(m_file_src.GetBuffer(0), image_src);
 		cv::imwrite(m_file_dst.GetBuffer(0), image_dst);
 	}

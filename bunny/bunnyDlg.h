@@ -36,7 +36,7 @@ protected:
 public:
 	void DrawPicToHDC(cv::Mat img_src, UINT ID);
 	afx_msg void OnBnClickedButtonOpen();
-	CString m_file_src;
+	CString m_file_get;
 	// source image
 	cv::Mat image_src;
 	// //destinate image
@@ -48,5 +48,6 @@ private:
 public:
 	afx_msg void OnBnClickedButtonSave();
 	CString m_file_dst;
+	CString m_file_src;
 	afx_msg void OnClickedButtonProc();
 };

@@ -58,8 +58,14 @@ void Bunny::procImage()
 //	cv::medianBlur(image_temp, m_imageDst, 3);
 // 	lbp<UINT8>(image_temp, m_imageDst);
 //  cv::Laplacian(image_temp, image_dst, CV_8U, 3);
-	lawsTexture(image_temp, m_imageDst);
-//	showImage(m_imageDst, 0);
+	lawsTexture(image_temp, image_temp);
+	saveImage(image_temp, "./img_bunny_deb/bin.bmp");
+	openClose(image_temp, image_temp, 1, 1, 0);
+	saveImage(image_temp, "./img_bunny_deb/temp.bmp");
+	openClose(image_temp, m_imageDst, 0, 2, 1);
+	test(m_imageDst);
+//	getSizeContours(m_imageDst, m_imageDst);
+	saveImage(m_imageDst, "./img_bunny_deb/dst.bmp");
 }
 
 

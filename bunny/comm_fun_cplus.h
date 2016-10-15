@@ -1,13 +1,28 @@
 #ifndef _COMM_FUN_CPLUS
 #define _COMM_FUN_CPLUS
 #include "comm_def.h"
+#include <vector>
 
 #define SHOW_IMAGE			1
+#define SAVE_IMAGE			1
 
 void showImage(cv::Mat &image, int time);
+
+void saveImage(cv::Mat &image, const char *file_name);
+void saveImage(cv::Mat &image, CString file_name);
+void saveImage(cv::Mat &image, const string file_name);
+
 int writeDataBin(const char *file_name, const void *data, size_t data_len);
 //should free *data
 int readDataBin(const char *file_name, void **data, size_t data_len);
+
+void binReverse(cv::Mat &src);
+
+void erosion(cv::Mat &src, cv::Mat &dst, int type, int size);
+
+void dilation(cv::Mat &src, cv::Mat &dst, int type, int size);
+
+void openClose(cv::Mat &src, cv::Mat &dst, int type, int size, int open_close_flag);
 
 void lawsTexture(cv::Mat &img_src, cv::Mat &img_dst);
 
@@ -42,5 +57,8 @@ void lbp(cv::Mat &src, cv::Mat &dst)
 	dst.col(dst.cols - 1 ).setTo(cv::Scalar(255));
 }
 
+int getSizeContours(cv::Mat &img_src, cv::Mat &img_dst);
+
+int test( Mat &img_src);
 
 #endif
