@@ -18,11 +18,11 @@ int readDataBin(const char *file_name, void **data, size_t data_len);
 
 void binReverse(cv::Mat &src);
 
-void erosion(cv::Mat &src, cv::Mat &dst, int type, int size);
+void erosion(cv::Mat &src, cv::Mat &dst, int type, int size, cv::Mat el = cv::Mat(3, 3, CV_8U, cv::Scalar(1)));
 
-void dilation(cv::Mat &src, cv::Mat &dst, int type, int size);
+void dilation(cv::Mat &src, cv::Mat &dst, int type, int size, cv::Mat el = cv::Mat(3, 3, CV_8U, cv::Scalar(1)));
 
-void openClose(cv::Mat &src, cv::Mat &dst, int type, int size, int open_close_flag);
+void openClose(cv::Mat &src, cv::Mat &dst, int type, int size, int op, cv::Mat el = cv::Mat(3, 3, CV_8U, cv::Scalar(1)));
 
 void lawsTexture(cv::Mat &img_src, cv::Mat &img_dst);
 
@@ -59,6 +59,5 @@ void lbp(cv::Mat &src, cv::Mat &dst)
 
 int getSizeContours(cv::Mat &img_src, cv::Mat &img_dst);
 
-int test( Mat &img_src);
-
+int getSizeContoursGray(cv::Mat &img_src, cv::Mat &img_dst, int area = 4, int y_min = 0, int y_max = 4000);
 #endif

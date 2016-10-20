@@ -53,19 +53,30 @@ RETURN:
 void Bunny::procImage()
 {
 	cv::Mat image_temp;
+	cv::Mat image_temp_2;
+	cv::Mat image_delta;
 	cv::GaussianBlur(m_imageSrc, image_temp, cv::Size(5, 5), 2, 2);
 	cv::pyrDown(m_imageSrc, image_temp);
 //	cv::medianBlur(image_temp, m_imageDst, 3);
 // 	lbp<UINT8>(image_temp, m_imageDst);
 //  cv::Laplacian(image_temp, image_dst, CV_8U, 3);
 	lawsTexture(image_temp, image_temp);
+	dilation(image_temp, image_temp, 0, 1);
+	erosion(image_temp, image_temp, 0, 1);
 	saveImage(image_temp, "./img_bunny_deb/bin.bmp");
-	openClose(image_temp, image_temp, 1, 1, 0);
-	saveImage(image_temp, "./img_bunny_deb/temp.bmp");
-	openClose(image_temp, m_imageDst, 0, 2, 1);
-	test(m_imageDst);
-//	getSizeContours(m_imageDst, m_imageDst);
-	saveImage(m_imageDst, "./img_bunny_deb/dst.bmp");
+
+	image_delta = cv::imread("./img_bunny_deb/delta.bmp", -1);
+	image_temp_2 = image_temp - image_delta;
+
+	openClose(image_temp_2, image_temp_2, 1, 1, cv::MORPH_OPEN);
+	openClose(image_temp_2, image_temp_2, 0, 1, cv::MORPH_CLOSE);
+	saveImage(image_temp_2, "./img_bunny_deb/close.bmp");
+
+	dilation(image_temp_2, image_temp_2, 0, 1);
+	image_delta = image_temp - image_temp_2;
+	getSizeContoursGray(image_delta, image_delta, 1, 190);
+	dilation(image_delta, image_delta, 0, 1);
+	saveImage(image_delta, "./img_bunny_deb/delta.bmp");
 }
 
 

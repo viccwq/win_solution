@@ -301,7 +301,7 @@ void CbunnyDlg::OnClickedButtonProc()
 {
 	// TODO: Add your control notification handler code here
 	CString file_name;
-	for (int i = 1; i < 362; i++)
+	for (int i = 19; i < 362; i++)
 	{
 		file_name.Format("%d", i);
 		getBunny((LPSTR)(LPCSTR)("./img_bunny_all/" + file_name), image_src, image_dst);
