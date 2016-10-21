@@ -1,7 +1,6 @@
 #ifndef _IMG_PROC_H
 #define _IMG_PROC_H
 #include "comm_def.h"
-#include "comm_fun_cplus.h"
 
 
 #define BUNNY_H				512

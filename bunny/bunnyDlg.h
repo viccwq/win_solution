@@ -4,7 +4,6 @@
 
 #pragma once
 #include "comm_def.h"
-#include "comm_fun_cplus.h"
 #include "subfun_cplus.h"
 #include "img_proc.h"
 

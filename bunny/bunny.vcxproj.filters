@@ -43,9 +43,6 @@
     <ClInclude Include="comm_def.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="comm_fun_cplus.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="subfun_cplus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -61,9 +58,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="comm_fun_cplus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="subfun_cplus.cpp">
