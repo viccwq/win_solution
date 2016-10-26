@@ -271,7 +271,7 @@ void CbunnyDlg::OnBnClickedButtonStart()
 	vic::getHarris(image_src, image_dst);
 */
 	/************************************************************************/
-	getBunny(str.data(), image_src, image_dst);
+	getBunnySingle(str.data(), image_src, image_dst);
 
 	DrawPicToHDC(image_src, IDC_Image);
 	DrawPicToHDC(image_dst, IDC_Image2);
@@ -291,7 +291,7 @@ void CbunnyDlg::OnBnClickedButtonSave()
 	// TODO: Add your control notification handler code here
 	m_file_src = m_file_get + ".bmp";
 	m_file_dst = m_file_get + "_pro.bmp";
-	cv::imwrite(m_file_dst.GetBuffer(0), image_src);
+	cv::imwrite(m_file_src.GetBuffer(0), image_src);
 	cv::imwrite(m_file_dst.GetBuffer(0), image_dst);
 }
 
@@ -301,7 +301,7 @@ void CbunnyDlg::OnClickedButtonProc()
 {
 	// TODO: Add your control notification handler code here
 	CString file_name;
-	for (int i = 19; i < 362; i++)
+	for (int i = 255; i >= 19; i--)
 	{
 		file_name.Format("%d", i);
 		getBunny((LPSTR)(LPCSTR)("./img_bunny_all/" + file_name), image_src, image_dst);

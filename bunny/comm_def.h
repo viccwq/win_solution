@@ -27,5 +27,10 @@ using namespace std;
 #pragma comment(lib, "../Release/vicImgPro.lib") //添加lib文件引用
 #endif
 
+#ifdef _DEBUG
+#define SAVE_FLAG				(1)
+#else
+#define SAVE_FLAG				(0)
+#endif
 
 #endif
