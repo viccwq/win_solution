@@ -75,6 +75,8 @@ int dat_to_image_16u(char *file_name, CvSize size)
 	read_data_from_file_ascii(file_name, &data, &data_len);
 	int index = 0;
 	IplImage *p_image = cvCreateImage(size, IPL_DEPTH_16U, 1);
+	IplImage *p_image_out = cvCreateImage(size, IPL_DEPTH_8U, 1);
+
 	cvSetZero(p_image);
 	int i, j;
 	unsigned short *img_data;
@@ -92,11 +94,14 @@ int dat_to_image_16u(char *file_name, CvSize size)
 	cvNamedWindow(file_name);
 	cvShowImage(file_name, p_image);
 	cvWaitKey();
-	char fall_name[128] = {0};
+	char fall_name[256] = {0};
 	sprintf(fall_name, "%s.bmp", file_name);
-	cvSaveImage(fall_name, p_image);
+
+	cvConvertScale(p_image, p_image_out, 1.0/255, 0);
+	cvSaveImage(fall_name, p_image_out);
 	cvDestroyWindow(file_name);
 	cvReleaseImage(&p_image);
+	cvReleaseImage(&p_image_out);
 
 	if (NULL != data)
 	{
@@ -241,6 +246,61 @@ int img_to_hex(char *file_name)
 }
 
 
+int img_calibration(char *file_name)
+{
+	IplImage *p_image = cvLoadImage(file_name, NULL);
+	unsigned char base[2000] = {0};
+	unsigned char *data_src = NULL, *data_dst;
+	int temp = 0, temp_2 = 0;
+	int i, j;
+	cvNamedWindow(file_name);
+	cvShowImage(file_name, p_image);
+	cvWaitKey();
+	cvDestroyWindow(file_name);
+
+	IplImage *p_image_cal = cvCreateImage(cvSize(1728, p_image->height), IPL_DEPTH_8U, 1);
+	cvSetZero(p_image_cal);
+	data_src = (unsigned char *)(p_image->imageData + p_image->widthStep * (p_image->height - 1));
+	data_dst = (unsigned char *)(p_image_cal->imageData);
+	memcpy(base, p_image->imageData + (p_image->widthStep * 6), p_image->widthStep);
+	for (i = 0; i < p_image->height; i++)
+	{
+		for (j = 0; j < p_image->width; j++)
+		{
+			temp = data_src[j] - base[j];
+			if (temp < 0)
+				data_dst[j] = 0;
+			else
+#if 0
+				data_dst[j] = (temp >> 1) + temp;
+#else
+			{
+				temp_2 = (temp << 1) + temp;
+				data_dst[j] = (temp_2 & 0xffffff00) ? 255 : temp_2;
+			}
+#endif
+
+
+		}
+		data_src -= p_image->widthStep;
+		data_dst += p_image_cal->widthStep;
+	}
+
+	char fall_name[128] = {0};
+	sprintf(fall_name, "%s.cal.bmp", file_name);
+
+	cvNamedWindow(fall_name);
+	cvShowImage(fall_name, p_image_cal);
+	cvWaitKey();
+	cvDestroyWindow(fall_name);
+	cvSaveImage(fall_name, p_image_cal);
+
+	cvReleaseImage(&p_image);
+	cvReleaseImage(&p_image_cal);
+	return 0;
+}
+
+
 
 
 
@@ -275,9 +335,13 @@ int main(int argc, char *argv[])
 		else
 			dat_to_image_16u(argv[2], size);
 	}
-	else if (!strcmp(argv[1], "-v"))
+	else if (!strcmp(argv[1], "-h"))
 	{
 		img_to_hex(argv[2]);
+	}
+	else if (!strcmp(argv[1], "-c"))
+	{
+		img_calibration(argv[2]);
 	}
 	else
 		return 0;

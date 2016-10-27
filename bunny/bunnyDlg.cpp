@@ -301,7 +301,19 @@ void CbunnyDlg::OnClickedButtonProc()
 {
 	// TODO: Add your control notification handler code here
 	CString file_name;
+	system("copy .\\img_bunny_deb\\delta-256.bmp .\\img_bunny_deb\\delta.bmp");
 	for (int i = 255; i >= 19; i--)
+	{
+		file_name.Format("%d", i);
+		getBunny((LPSTR)(LPCSTR)("./img_bunny_all/" + file_name), image_src, image_dst);
+		printf("\"%s\" is in processing\n", file_name.GetBuffer(0));
+		m_file_src = "./img_bunny_all/src/" + file_name + ".bmp";
+		m_file_dst = "./img_bunny_all/bin/" + file_name + "_pro.bmp";
+		cv::imwrite(m_file_src.GetBuffer(0), image_src);
+		cv::imwrite(m_file_dst.GetBuffer(0), image_dst);
+	}
+	system("copy .\\img_bunny_deb\\delta-256.bmp .\\img_bunny_deb\\delta.bmp");
+	for (int i = 255; i <= 360; i++)
 	{
 		file_name.Format("%d", i);
 		getBunny((LPSTR)(LPCSTR)("./img_bunny_all/" + file_name), image_src, image_dst);
