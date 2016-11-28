@@ -2,7 +2,11 @@
 //http://blog.csdn.net/testcs_dn/article/details/27237509
 //#include "stdafx.h"  
 #include "../simple_dll/SimpleDLL.h" //添加头文件引用  
-#pragma comment(lib, "../Release/simple_dll.lib") //添加lib文件引用   
+#ifdef _DEBUG
+#pragma comment(lib, "../Debug/simple_dll.lib") //添加lib文件引用 
+#else
+#pragma comment(lib, "../Release/simple_dll.lib") //添加lib文件引用
+#endif
 #include <process.h>  
 #include <locale.h> 
 #include <stdio.h>
