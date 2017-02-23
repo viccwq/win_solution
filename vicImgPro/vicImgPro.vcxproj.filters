@@ -15,18 +15,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cal_max_u8.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cal_min_u8.cpp">
+    <ClCompile Include="vicImgPro.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="comm.hpp">
+    <ClInclude Include="vicImgPro.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cv_lib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

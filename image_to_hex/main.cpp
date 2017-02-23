@@ -23,6 +23,12 @@ static int read_data_from_file_ascii(char *file_name, int **data, int *data_len)
 	int read_line = 0;
 	while(fgets(buffer, MAX_LENTH, fp) != NULL)
 	{
+		if (strlen(buffer) > 5)
+		{
+			printf("the line is abandoned: %s\n", buffer);
+			memset(buffer, 0x0, MAX_LENTH * 2);
+			continue;
+		}
 		if (buffer[0] == '0' && buffer[1] == 'X')
 			sscanf(buffer, "0X%x", &read_data);
 		if (buffer[0] == '0' && buffer[1] == 'x')
@@ -300,7 +306,64 @@ int img_calibration(char *file_name)
 	return 0;
 }
 
+extern unsigned char cal_max_u8[];
+int img_calibration_2(char *file_name)
+{
+	IplImage *p_image = cvLoadImage(file_name, NULL);
+	unsigned char base[2000] = {0};
+	unsigned char *data_src = NULL, *data_dst;
+	int temp = 0, temp_2 = 0;
+	int i, j;
+	cvNamedWindow(file_name);
+	cvShowImage(file_name, p_image);
+	cvWaitKey();
+	cvDestroyWindow(file_name);
 
+	IplImage *p_image_cal = cvCreateImage(cvSize(1440, p_image->height), IPL_DEPTH_8U, 1);
+	cvSetZero(p_image_cal);
+	data_src = (unsigned char *)(p_image->imageData + p_image->widthStep * (p_image->height - 1));
+	data_dst = (unsigned char *)(p_image_cal->imageData);
+	memcpy(base, p_image->imageData + (p_image->widthStep * 6), p_image->widthStep);
+	for (i = 0; i < p_image->height; i++)
+	{
+		for (j = 0; j < p_image->width; j++)
+		{
+			temp = data_src[j] - base[j];
+			if (temp < 0)
+				data_dst[j] = 0;
+			else
+#if 0
+				data_dst[j] = (temp >> 1) + temp;
+#else
+			{
+				int delta = (cal_max_u8[j] - base[j]);
+				if (delta <= 0)
+					temp_2 = 0;
+				else
+					temp_2 = (255 * temp) / delta;
+				data_dst[j] = (temp_2 & 0xffffff00) ? 255 : temp_2;
+			}
+#endif
+
+
+		}
+		data_src -= p_image->widthStep;
+		data_dst += p_image_cal->widthStep;
+	}
+
+	char fall_name[128] = {0};
+	sprintf(fall_name, "%s.cal.bmp", file_name);
+
+	cvNamedWindow(fall_name);
+	cvShowImage(fall_name, p_image_cal);
+	cvWaitKey();
+	cvDestroyWindow(fall_name);
+	cvSaveImage(fall_name, p_image_cal);
+
+	cvReleaseImage(&p_image);
+	cvReleaseImage(&p_image_cal);
+	return 0;
+}
 
 
 
@@ -341,7 +404,7 @@ int main(int argc, char *argv[])
 	}
 	else if (!strcmp(argv[1], "-c"))
 	{
-		img_calibration(argv[2]);
+		img_calibration_2(argv[2]);
 	}
 	else
 		return 0;
