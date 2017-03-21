@@ -24,8 +24,13 @@ using namespace cv;
 #endif
 
 #ifndef OPENCV1_0
-#define LIB_PATH "D:/Program Files (x86)/opencv2.4.9/opencv/build/x86/vc10/lib/"
+
 #ifdef _DEBUG
+//official
+//#define LIB_PATH "D:/Program Files (x86)/opencv2.4.9/opencv/build/x86/vc10/lib/"
+//custom compiled
+#define LIB_PATH "D:/Program Files (x86)/opencv2.4.9/opencv/build_vs10/lib/Debug/"
+
 #pragma comment(lib, LIB_PATH"opencv_ml249d.lib")
 #pragma comment(lib, LIB_PATH"opencv_calib3d249d.lib")
 #pragma comment(lib, LIB_PATH"opencv_contrib249d.lib")
@@ -46,6 +51,11 @@ using namespace cv;
 #pragma comment(lib, LIB_PATH"opencv_superres249d.lib")
 #pragma comment(lib, LIB_PATH"opencv_videostab249d.lib")
 #else
+//official
+//#define LIB_PATH "D:/Program Files (x86)/opencv2.4.9/opencv/build/x86/vc10/lib/"
+//custom compiled
+#define LIB_PATH "D:/Program Files (x86)/opencv2.4.9/opencv/build_vs10/lib/Release/"
+
 #pragma comment(lib, LIB_PATH"opencv_ml249.lib")
 #pragma comment(lib, LIB_PATH"opencv_calib3d249.lib")
 #pragma comment(lib, LIB_PATH"opencv_contrib249.lib")
