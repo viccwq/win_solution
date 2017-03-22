@@ -23,7 +23,7 @@ static int read_data_from_file_ascii(char *file_name, int **data, int *data_len)
 	int read_line = 0;
 	while(fgets(buffer, MAX_LENTH, fp) != NULL)
 	{
-		if (strlen(buffer) > 5)
+		if (strlen(buffer) > 7)
 		{
 			printf("the line is abandoned: %s\n", buffer);
 			memset(buffer, 0x0, MAX_LENTH * 2);
