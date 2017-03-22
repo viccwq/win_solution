@@ -1,6 +1,11 @@
 #ifndef _COMM_DEF_H
 #define _COMM_DEF_H
 
+#ifdef __cplusplus
+#include <iostream>
+#include <vector>
+using namespace std;
+#else
 //#include <Windows.h>  
 #include <intrin.h>
 #include <basetsd.h>
@@ -9,15 +14,12 @@
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
-#include <iostream>
-#include <vector>
 #include <process.h>
-#include <cstring>
 #include <cstringt.h>
 //#include <afx.h>
 #include <sys/types.h>
 #include <atlimage.h>
-using namespace std;
+#endif
 
 #include "../vicImgPro/vicImgPro.h"
 #include "../vicImgPro/cv_lib.h"

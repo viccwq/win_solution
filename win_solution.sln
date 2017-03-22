@@ -17,9 +17,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vicImgPro", "vicImgPro\vicI
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "image_to_hex", "image_to_hex\image_to_hex.vcxproj", "{15EBBEC3-9CD9-454A-8A6F-2B1CFCBB9F12}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample_opencv", "sample_opencv", "{333604CB-DD95-4CBB-A064-AF7FF5D40C20}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "face_rec", "face_rec\face_rec.vcxproj", "{524D7EC2-E959-4EBB-A988-B687CA01E11F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sample_opencv", "sample_opencv\sample_opencv.vcxproj", "{1072AAB4-732A-4B46-9AB4-09D174A36C16}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +51,10 @@ Global
 		{524D7EC2-E959-4EBB-A988-B687CA01E11F}.Debug|Win32.Build.0 = Debug|Win32
 		{524D7EC2-E959-4EBB-A988-B687CA01E11F}.Release|Win32.ActiveCfg = Release|Win32
 		{524D7EC2-E959-4EBB-A988-B687CA01E11F}.Release|Win32.Build.0 = Release|Win32
+		{1072AAB4-732A-4B46-9AB4-09D174A36C16}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1072AAB4-732A-4B46-9AB4-09D174A36C16}.Debug|Win32.Build.0 = Debug|Win32
+		{1072AAB4-732A-4B46-9AB4-09D174A36C16}.Release|Win32.ActiveCfg = Release|Win32
+		{1072AAB4-732A-4B46-9AB4-09D174A36C16}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
