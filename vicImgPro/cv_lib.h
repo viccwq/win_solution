@@ -13,6 +13,10 @@
 #include <opencv\highgui.h>
 #include <opencv\ml.h>
 #include <opencv2\opencv.hpp>
+#include <opencv2\nonfree\features2d.hpp>
+#include <opencv2\nonfree\gpu.hpp>
+#include <opencv2\nonfree\nonfree.hpp>
+#include <opencv2\nonfree\ocl.hpp>
 using namespace cv;
 #else
 #include <cv.h>
