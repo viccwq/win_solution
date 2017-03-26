@@ -1,0 +1,6 @@
+written_rec/t10k-images.idx3-ubyte 
+written_rec/t10k-labels.idx1-ubyte
+written_rec/train-images.idx3-ubyte
+written_rec/train-labels.idx1-ubyte
+written_rec/Debug/
+written_rec/Release/
