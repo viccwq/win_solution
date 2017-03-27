@@ -21,6 +21,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "face_rec", "face_rec\face_r
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sample_opencv", "sample_opencv\sample_opencv.vcxproj", "{1072AAB4-732A-4B46-9AB4-09D174A36C16}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "written_rec", "written_rec\written_rec.vcxproj", "{606DBAC5-4DD2-413C-A5D0-5EEABEACB753}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -55,6 +57,10 @@ Global
 		{1072AAB4-732A-4B46-9AB4-09D174A36C16}.Debug|Win32.Build.0 = Debug|Win32
 		{1072AAB4-732A-4B46-9AB4-09D174A36C16}.Release|Win32.ActiveCfg = Release|Win32
 		{1072AAB4-732A-4B46-9AB4-09D174A36C16}.Release|Win32.Build.0 = Release|Win32
+		{606DBAC5-4DD2-413C-A5D0-5EEABEACB753}.Debug|Win32.ActiveCfg = Debug|Win32
+		{606DBAC5-4DD2-413C-A5D0-5EEABEACB753}.Debug|Win32.Build.0 = Debug|Win32
+		{606DBAC5-4DD2-413C-A5D0-5EEABEACB753}.Release|Win32.ActiveCfg = Release|Win32
+		{606DBAC5-4DD2-413C-A5D0-5EEABEACB753}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
