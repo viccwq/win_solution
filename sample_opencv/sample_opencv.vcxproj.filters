@@ -29,5 +29,8 @@
     <ClCompile Include="harris_fearure.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="adaptive_thresh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
