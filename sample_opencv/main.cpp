@@ -3,11 +3,13 @@ using namespace std;
 extern int sift_feature();
 extern int harris_feature();
 extern int adaptive_thresh( int, string file_name);
+extern int ffilldemmo();
 
 int main()
 {
-//     sift_feature();
-//    harris_feature();
-    adaptive_thresh( 1, "adaptive_test_4.bmp");
+//  sift_feature();
+//  harris_feature();
+//     adaptive_thresh( 1, "adaptive_test_4.bmp");
+    ffilldemmo();
     return 0;
 }

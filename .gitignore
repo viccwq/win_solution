@@ -1,3 +1,16 @@
+# User-specific files
+*.suo
+*.user
+*.sln.docstates
+# Build results
+
+[Dd]ebug/
+[Rr]elease/
+build/
+dist/
+[Bb]in/
+[Oo]bj/
+
 written_rec/t10k-images.idx3-ubyte 
 written_rec/t10k-labels.idx1-ubyte
 written_rec/train-images.idx3-ubyte
@@ -6,3 +19,6 @@ written_rec/Debug/
 written_rec/Release/
 written_rec/cv_mnist.xml
 written_rec/mnist_svm.xml
+
+sample_opencv/Debug/
+sample_opencv/Release/
