@@ -1,9 +1,0 @@
-﻿Build started 2016/10/10 星期一 15:06:40.
-     1>Project "E:\learn_doc\vic_solution\simple_dll_test\simple_dll_test.vcxproj" on node 3 (clean target(s)).
-     1>_PrepareForClean:
-         Deleting file "Release\simple_dll_test.lastbuildstate".
-     1>Done Building Project "E:\learn_doc\vic_solution\simple_dll_test\simple_dll_test.vcxproj" (clean target(s)).
-
-Build succeeded.
-
-Time Elapsed 00:00:00.01
