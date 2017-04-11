@@ -82,6 +82,7 @@
   <ItemGroup>
     <ClCompile Include="adaptive_thresh.cpp" />
     <ClCompile Include="ffilldemo.cpp" />
+    <ClCompile Include="geom_trans.cpp" />
     <ClCompile Include="harris_fearure.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="sift_feature.cpp" />
