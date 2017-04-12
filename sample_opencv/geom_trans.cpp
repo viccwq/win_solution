@@ -4,6 +4,10 @@
  * @author OpenCV team
  */
 //http://blog.csdn.net/chenjiazhou12/article/details/21827069
+//http://www.cnblogs.com/wangguchangqing/p/4039095.html
+//http://www.cnblogs.com/wangguchangqing/p/4045150.html
+//http://blog.csdn.net/fengbingchun/article/details/17713429
+
 #include "comm_def_col.h"
 #include <iostream>
 #include <stdio.h>
@@ -83,6 +87,8 @@ int geom_trans(const string file_name)
   warpAffine( warp_dst, warp_rotate_dst, rot_mat, warp_dst.size() );
 
 
+  Mat resize_dst;
+  resize(src, resize_dst, Size(floor(src.cols * 1.5), floor(src.rows * 1.5)), 0, 0, INTER_LINEAR);
   /// Show what you got
   namedWindow( source_window, WINDOW_AUTOSIZE );
   imshow( source_window, src );
@@ -92,6 +98,9 @@ int geom_trans(const string file_name)
 
   namedWindow( warp_rotate_window, WINDOW_AUTOSIZE );
   imshow( warp_rotate_window, warp_rotate_dst );
+
+  namedWindow( "resize", WINDOW_AUTOSIZE );
+  imshow( "resize", resize_dst );
 
   /// Wait until user exits the program
   waitKey(0);

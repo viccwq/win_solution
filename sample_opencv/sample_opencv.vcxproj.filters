@@ -38,5 +38,8 @@
     <ClCompile Include="geom_trans.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="vic_resize.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -86,6 +86,7 @@
     <ClCompile Include="harris_fearure.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="sift_feature.cpp" />
+    <ClCompile Include="vic_resize.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
