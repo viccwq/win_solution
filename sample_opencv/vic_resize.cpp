@@ -1,4 +1,9 @@
 //http://blog.csdn.net/fengbingchun/article/details/17335477
+
+//一维DFT源码
+//http://blog.csdn.net/calcular/article/details/46804779
+//图像傅里叶变换原理
+//http://www.360doc.com/content/10/1128/20/2226925_73234298.shtml
 #include "comm_def_col.h"
 void vic_resize()
 {

@@ -6,6 +6,7 @@ extern int adaptive_thresh( int, string file_name);
 extern int ffilldemmo();
 extern int geom_trans(const string file_name);
 extern void vic_resize();
+extern int tutorial_dft();
 int main()
 {
 //  sift_feature();
@@ -14,6 +15,7 @@ int main()
 //     ffilldemmo();
 //     geom_trans("./affine.bmp");
 //     geom_trans("");
-    vic_resize();
+//    vic_resize();
+    tutorial_dft();
     return 0;
 }
