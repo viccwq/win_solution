@@ -20,10 +20,13 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="read_mnist_bin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="read_mnist_bin.cpp">
+    <ClCompile Include="rev_svm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
