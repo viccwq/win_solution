@@ -35,5 +35,8 @@
     <ClCompile Include="pre_proc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="rec_knn.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

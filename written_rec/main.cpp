@@ -1,6 +1,7 @@
 //Ð´×Ö°å
 //http://blog.csdn.net/wangyaninglm/article/details/17091901
 #include "comm_def_col.h"
+#include "pre_proc.hpp"
 
 Mat g_img_draw;
 Mat g_img_buff;
@@ -125,6 +126,7 @@ int main()
         case 's':
             {
                 imwrite("./Debug/char.bmp", g_img_draw);
+                imwrite("./Debug/char2.bmp", pre_process(g_img_draw));
                 cout<<"/Debug/char.bmp is saved"<<endl;
             }
             break;

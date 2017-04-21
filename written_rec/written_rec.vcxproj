@@ -83,6 +83,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pre_proc.cpp" />
+    <ClCompile Include="rec_knn.cpp" />
     <ClCompile Include="rev_svm.cpp" />
     <ClCompile Include="read_mnist_bin.cpp" />
   </ItemGroup>
