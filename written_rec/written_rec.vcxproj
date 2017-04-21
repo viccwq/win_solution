@@ -78,9 +78,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="comm_def_col.h" />
+    <ClInclude Include="pre_proc.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="pre_proc.cpp" />
     <ClCompile Include="rev_svm.cpp" />
     <ClCompile Include="read_mnist_bin.cpp" />
   </ItemGroup>

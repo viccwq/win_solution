@@ -18,6 +18,9 @@
     <ClInclude Include="comm_def_col.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="pre_proc.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="read_mnist_bin.cpp">
@@ -27,6 +30,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pre_proc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
