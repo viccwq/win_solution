@@ -6,30 +6,35 @@ Mat g_img_draw;
 Mat g_img_buff;
 int g_radius = 5;
 int g_drawing = 0;
+int g_erase = 0;
 
 int g_last_x = 0;
 int g_last_y = 0;
 
-#if 0
+//background color
+Scalar g_background = Scalar(255, 255, 0);
+//ink color
+Scalar g_ink = Scalar(0, 0, 0);
+//brush color
+Scalar g_brush = g_ink;
 
-void draw(int x,int y)
+void inline draw(int x,int y)
 {
     //Draw a circle where is the mouse
-    cvCircle(imagen, cvPoint(x,y), r, CV_RGB(red,green,blue), -1, 4, 0);
-    //Get clean copy of image
-    screenBuffer=cvCloneImage(imagen);
-    cvShowImage( "手写板", screenBuffer );
+    circle(g_img_draw, Point(x, y), g_radius, g_brush, -1, 4, 0);
 }
 
-#endif
+void inline draw_clean()
+{
+    g_img_draw.setTo(g_background);
+}
 
-void drawCursor(int x, int y)
+void inline drawCursor(int x, int y)
 {
     //Get clean copy of image
     g_img_buff = g_img_draw.clone();
     //Draw a circle where is the mouse
-    circle(g_img_buff, Point(x, y), g_radius, Scalar(0, 0,0), 1, 4, 0);
-    imshow("手写板", g_img_buff);
+    circle(g_img_buff, Point(x, y), g_radius, Scalar(0, 0, 255), 1, 4, 0);
 }
 
 
@@ -39,24 +44,24 @@ void on_mouse( int event, int x, int y, int flags, void* param )
     g_last_y = y;
     drawCursor(x, y);
     //Select mouse Event
-    if(event==CV_EVENT_LBUTTONDOWN)
+    if(event == CV_EVENT_LBUTTONDOWN)
     {
         g_drawing = 1;
-//        draw(x,y);
+        draw(x,y);
     }
-    else if(event==CV_EVENT_LBUTTONUP)
+    else if(event == CV_EVENT_LBUTTONUP)
     {
         //drawing=!drawing;
         g_drawing = 0;
     }
     else if(event == CV_EVENT_MOUSEMOVE  &&  (flags & CV_EVENT_FLAG_LBUTTON))
     {
-        if(g_drawing);
-//            draw(x,y);
+        if(g_drawing)
+           draw(x,y);
     }
-    else if (event == CV_EVENT_MOUSEMOVE)
+    else if (event == CV_EVENT_RBUTTONUP)
     {
-        
+        draw_clean();
     }
 }
 
@@ -65,15 +70,16 @@ int main()
     printf( "                                 数字字符识别\n"
         "快捷键: \n"
         "\tr - 重置白版\n"
-        "\t+ - 笔迹增粗 ++\n"
-        "\t- - 笔迹减细 --\n"
-        "\ts - 保存输入为 out.pbm\n"	//输入可以作为样本再次部署进去
-        "\tc - 输入分类识别, 结果在console显示\n"
+        "\t+ - 笔迹增粗\n"
+        "\t- - 笔迹减细\n"
+        "\te - 笔迹擦除(右击)\n"
+        "\ts - 保存图片\n"
+        "\tc - 数字识别\n"
         "\tESC - 退出程序\n");
 
     //Create image
     g_img_draw.create(128, 128, CV_8UC3);
-    g_img_draw.setTo(Scalar(255, 255, 0));
+    g_img_draw.setTo(g_background);
 
     g_img_buff = g_img_draw.clone();
 
@@ -90,34 +96,62 @@ int main()
 
         imshow("手写板", g_img_buff);
         c = waitKey(10);
+
         if( (char) c == 27 )
             break;
-        if( (char) c == '+')
-        {
-            g_radius++;
-            cout<<g_radius<<endl;
-            drawCursor(g_last_x, g_last_y);
-        }
-        if(((char)c == '-') && (g_radius > 1))
-        {
-            g_radius--;
-            cout<<g_radius<<endl;
-            drawCursor(g_last_x, g_last_y);
-        }
-        if( (char)c == 'r')
-        {
-//            cvSet(imagen, cvRealScalar(255),NULL);
-//            drawCursor(last_x,last_y);
-        }
-        if( (char)c == 's')
-        {
-//            cvSaveImage("out.pbm", imagen);
-        }
-        if( (char)c == 'c')
-        {
-//            ocr.classify(imagen,1);
-        }
 
+        switch ((char) c)
+        {
+        case '+':
+            {
+                g_radius++;
+                cout<<g_radius<<endl;
+                drawCursor(g_last_x, g_last_y);    
+            }
+            break;
+        case '-':
+            {
+                g_radius--;
+                cout<<g_radius<<endl;
+                drawCursor(g_last_x, g_last_y);
+            }
+            break;
+        case 'r':
+            {
+                draw_clean();
+                drawCursor(g_last_x, g_last_y);
+            }
+            break;
+        case 's':
+            {
+                imwrite("./Debug/char.bmp", g_img_draw);
+                cout<<"/Debug/char.bmp is saved"<<endl;
+            }
+            break;
+        case 'e':
+            {
+                if (0 == g_erase)
+                {
+                    g_erase = 1;
+                    g_brush = g_background;
+                    cout<<"Ereasing . . ."<<endl;
+                }
+                else
+                {
+                    g_erase = 0;
+                    g_brush = g_ink;
+                    cout<<"Drawing . . ."<<endl;
+                }
+            }
+            break;
+        case 'c':
+            {
+                
+            }
+            break;
+        default:
+            break;
+        }
     }
  
 
