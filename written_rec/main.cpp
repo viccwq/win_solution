@@ -2,6 +2,9 @@
 //http://blog.csdn.net/wangyaninglm/article/details/17091901
 #include "comm_def_col.h"
 #include "pre_proc.hpp"
+#include "read_mnist_bin.h"
+
+extern int rec_svm();
 
 Mat g_img_draw;
 Mat g_img_buff;
@@ -78,6 +81,9 @@ int main()
         "\tc - 数字识别\n"
         "\tESC - 退出程序\n");
 
+    //load the mnist image
+    ReadMnist::read_files();
+
     //Create image
     g_img_draw.create(128, 128, CV_8UC3);
     g_img_draw.setTo(g_background);
@@ -148,7 +154,10 @@ int main()
             break;
         case 'c':
             {
-                
+                Mat img = pre_process(g_img_draw);
+                threshold(img, img, 128, 255, THRESH_BINARY_INV);
+                img = ReadMnist::add_border(img);
+                imwrite("./Debug/aaa.bmp", img);
             }
             break;
         default:

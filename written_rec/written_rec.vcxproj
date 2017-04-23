@@ -79,13 +79,14 @@
   <ItemGroup>
     <ClInclude Include="comm_def_col.h" />
     <ClInclude Include="pre_proc.hpp" />
+    <ClInclude Include="read_mnist_bin.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pre_proc.cpp" />
     <ClCompile Include="rec_knn.cpp" />
-    <ClCompile Include="rev_svm.cpp" />
     <ClCompile Include="read_mnist_bin.cpp" />
+    <ClCompile Include="rev_svm.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

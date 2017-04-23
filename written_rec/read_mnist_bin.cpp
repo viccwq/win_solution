@@ -72,7 +72,9 @@ xxxx     unsigned byte   ??               pixel
 Pixels are organized row-wise. Pixel values are 0 to 255. 0 means background (white), 255
 means foreground (black). 
 */
-#include "comm_def_col.h"
+
+#include "read_mnist_bin.h"
+#include "io.h"
 
 double g_cost_time = 0;
 clock_t g_start_time;
@@ -219,4 +221,112 @@ Mat read_mnist_label(const string file_name)
     file.close();
     return DataMat;
 }
+
+
+Mat ReadMnist::train_img    = Mat::Mat(Size(1,1), CV_8UC1, NULL);
+Mat ReadMnist::train_label  = Mat::Mat(Size(1,1), CV_8UC1, NULL);
+Mat ReadMnist::test_img     = Mat::Mat(Size(1,1), CV_8UC1, NULL);
+Mat ReadMnist::test_label   = Mat::Mat(Size(1,1), CV_8UC1, NULL);
+Mat ReadMnist::avg_img      = Mat::Mat(Size(1,1), CV_8UC1, NULL);
+
+void ReadMnist::read_files()
+{
+    if (NULL != ReadMnist::train_img.data &&
+        NULL != ReadMnist::train_label.data &&
+        NULL != ReadMnist::test_img.data &&
+        NULL != ReadMnist::test_label.data)
+    {
+        return;
+    }
+
+    //load the image and label from xml
+    if (-1 != (_access(FILE_MNIST_XML, 0)))
+    {
+        FileStorage fs_r;
+        fs_r.open(FILE_MNIST_XML, FileStorage::READ);
+        fs_r["train_img"] >> ReadMnist::train_img;
+        fs_r["train_label"] >> ReadMnist::train_label;
+        fs_r["test_img"] >> ReadMnist::test_img;
+        fs_r["test_label"] >> ReadMnist::test_label;
+        fs_r.release();
+    }
+    //load the image and label from binary files
+    else
+    {
+        ReadMnist::train_img = read_mnist_image(FILE_TRAIN_IMG);
+        ReadMnist::train_label = read_mnist_image(FILE_TRAIN_LABEL);
+        ReadMnist::test_img = read_mnist_image(FILE_TEST_IMG);
+        ReadMnist::test_label = read_mnist_image(FILE_TRAIN_LABEL);
+
+        FileStorage fs(FILE_MNIST_XML, FileStorage::WRITE);
+        fs << "train_img" << ReadMnist::train_img;
+        fs << "train_label" << ReadMnist::train_label;
+        fs << "test_img" << ReadMnist::test_img;
+        fs << "test_label" << ReadMnist::test_label;
+        fs.release();
+    }
+}
+
+cv::Mat ReadMnist::add_border( const Mat &img_src )
+{
+    if (NULL == ReadMnist::train_img.data ||
+        NULL == ReadMnist::train_label.data ||
+        NULL == ReadMnist::test_img.data ||
+        NULL == ReadMnist::test_label.data)
+    {
+        return Mat::Mat(Size(1,1), CV_8UC1, NULL);
+    }
+
+
+    if (NULL == ReadMnist::avg_img.data)
+    {
+        Mat img_sum = Mat::zeros(Size(ReadMnist::train_img.cols, 1), CV_32FC1);
+        int count = 300;
+        for (int i = 0; i <count; i++)
+        {
+            Mat img_temp = ReadMnist::train_img.row(i);
+            img_temp.convertTo(img_temp, CV_32FC1, 1.0);
+            img_sum += img_temp;
+        }
+        threshold(img_sum, img_sum, 1, 255, THRESH_BINARY);
+    
+        img_sum.convertTo(img_sum, CV_8UC1, 1.0);
+        ReadMnist::avg_img = img_sum.reshape(0, 28);
+//         imshow("img_sum", ReadMnist::avg_img);
+//         waitKey(0);
+    }
+
+    //expand input image to optimal size
+    Mat padded;                            
+    int m = img_src.rows;
+    int n = img_src.cols;
+    int delta = m - n;
+    if (delta > 0)
+    {
+        m += floor(img_src.rows * 0.2);
+        n = m;
+    }
+    else
+    {
+        n += floor(img_src.cols * 0.2);
+        m = n;
+    }
+
+    copyMakeBorder(img_src, padded, \
+        floor((m - img_src.rows)/2.0), floor((m - img_src.rows)/2.0), \
+        floor((m - img_src.cols)/2.0), floor((m - img_src.cols)/2.0), \
+        BORDER_CONSTANT, Scalar::all(0));
+
+    return padded;
+
+}
+
+ReadMnist::ReadMnist(void)
+{
+}
+
+ReadMnist::~ReadMnist(void)
+{
+}
+
 
