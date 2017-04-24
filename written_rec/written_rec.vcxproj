@@ -80,6 +80,7 @@
     <ClInclude Include="comm_def_col.h" />
     <ClInclude Include="pre_proc.hpp" />
     <ClInclude Include="read_mnist_bin.h" />
+    <ClInclude Include="rec_knn.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

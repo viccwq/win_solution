@@ -110,7 +110,6 @@ static int find_min_box(const Mat &img_src, Rect &rect)
 Mat pre_process(const Mat &img_src)
 {
     Mat img_dst;
-    vector<Mat> mv;
     if (img_src.empty())
     {
         return img_dst;
@@ -120,6 +119,7 @@ Mat pre_process(const Mat &img_src)
     //splite the RGB image
     if (img_src.channels() > 1)
     {
+        vector<Mat> mv;
         split(img_src, mv);
         img_gray = mv[0].clone();
     }
@@ -136,9 +136,26 @@ Mat pre_process(const Mat &img_src)
     if (find_min_box(img_gray, rect))
         return img_dst;
 
-    resize(img_gray(rect), img_dst, Size(IMG_WIDTH, IMG_HEIGHT));
-    GaussianBlur(img_dst, img_dst, Size(5, 5), 0, 0);
-    threshold(img_dst, img_dst, 128, 255, THRESH_BINARY);
+    //convert the image to a square
+    img_gray = img_gray(rect).clone();
+    if ((img_gray.rows - img_gray.cols) > 2)
+    {
+        int m = (img_gray.rows - img_gray.cols) / 2;
+        int k = (img_gray.rows - img_gray.cols) % 2;
+        copyMakeBorder(img_gray, img_dst, 0, 0, m, m + k,\
+            BORDER_CONSTANT, Scalar::all(255));
+    }
+    else if ((img_gray.cols - img_gray.rows) > 2)
+    {
+        int m = (img_gray.cols - img_gray.rows) / 2;
+        int k = (img_gray.cols - img_gray.rows) % 2;
+        copyMakeBorder(img_gray, img_dst, m, m + k, 0, 0,\
+            BORDER_CONSTANT, Scalar::all(255));
+    }
+    else
+        img_dst = img_gray.clone();
+
+    GaussianBlur(img_dst, img_dst, Size(3, 3), 0, 0); 
 
     return img_dst;
 }

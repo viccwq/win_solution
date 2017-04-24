@@ -1,8 +1,7 @@
-//Ð´×Ö°å
-//http://blog.csdn.net/wangyaninglm/article/details/17091901
 #include "comm_def_col.h"
 #include "pre_proc.hpp"
 #include "read_mnist_bin.h"
+#include "rec_knn.h"
 
 extern int rec_svm();
 
@@ -25,7 +24,7 @@ Scalar g_brush = g_ink;
 void inline draw(int x,int y)
 {
     //Draw a circle where is the mouse
-    circle(g_img_draw, Point(x, y), g_radius, g_brush, -1, 4, 0);
+    circle(g_img_draw, Point(x, y), g_radius, g_brush, -1, CV_AA, 0);
 }
 
 void inline draw_clean()
@@ -83,6 +82,9 @@ int main()
 
     //load the mnist image
     ReadMnist::read_files();
+    RecKnn rec_knn;
+    rec_knn.train();
+    rec_knn.test();
 
     //Create image
     g_img_draw.create(128, 128, CV_8UC3);
@@ -155,7 +157,8 @@ int main()
         case 'c':
             {
                 Mat img = pre_process(g_img_draw);
-                threshold(img, img, 128, 255, THRESH_BINARY_INV);
+                //revert the color
+                img = 255 - img;
                 img = ReadMnist::add_border(img);
                 imwrite("./Debug/aaa.bmp", img);
             }

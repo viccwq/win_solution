@@ -274,7 +274,7 @@ cv::Mat ReadMnist::add_border( const Mat &img_src )
         NULL == ReadMnist::test_img.data ||
         NULL == ReadMnist::test_label.data)
     {
-        return Mat::Mat(Size(1,1), CV_8UC1, NULL);
+        return Mat::Mat(Size(0,0), CV_8UC1, NULL);
     }
 
 
@@ -296,29 +296,18 @@ cv::Mat ReadMnist::add_border( const Mat &img_src )
 //         waitKey(0);
     }
 
+    if (img_src.rows != img_src.cols)
+    {
+        return Mat::Mat(Size(0,0), CV_8UC1, NULL);
+    }
     //expand input image to optimal size
     Mat padded;                            
-    int m = img_src.rows;
-    int n = img_src.cols;
-    int delta = m - n;
-    if (delta > 0)
-    {
-        m += floor(img_src.rows * 0.2);
-        n = m;
-    }
-    else
-    {
-        n += floor(img_src.cols * 0.2);
-        m = n;
-    }
+    int m = floor(img_src.rows * 0.17);
 
-    copyMakeBorder(img_src, padded, \
-        floor((m - img_src.rows)/2.0), floor((m - img_src.rows)/2.0), \
-        floor((m - img_src.cols)/2.0), floor((m - img_src.cols)/2.0), \
+    copyMakeBorder(img_src, padded, m, m, m, m,\
         BORDER_CONSTANT, Scalar::all(0));
 
     return padded;
-
 }
 
 ReadMnist::ReadMnist(void)
