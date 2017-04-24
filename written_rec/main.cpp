@@ -160,7 +160,7 @@ int main()
                 //revert the color
                 img = 255 - img;
                 img = ReadMnist::add_border(img);
-                imwrite("./Debug/aaa.bmp", img);
+                cout<<rec_knn.classcify(img)<<endl;
             }
             break;
         default:

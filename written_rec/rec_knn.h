@@ -9,7 +9,7 @@ public:
     ~RecKnn();
     void train();
     void test();
-    int classify(const Mat &img_src);
+    int classcify(const Mat &img_src);
 protected:
 private:
     CvKNearest *m_knn;
@@ -19,7 +19,6 @@ private:
     Mat m_test_img;
     Mat m_test_label;
     int m_K;
-
 };
 
 #endif

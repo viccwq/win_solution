@@ -25,8 +25,8 @@ void RecKnn::train()
         return;
     }
     //load data
-    ReadMnist::train_img(Range(0,1000), Range::all()).convertTo(this->m_train_img, CV_32FC1, 1.0 / 255.0);
-    ReadMnist::train_label(Range(0,1000), Range::all()).convertTo(this->m_train_label, CV_32FC1, 1.0);
+    ReadMnist::train_img(Range(0,2000), Range::all()).convertTo(this->m_train_img, CV_32FC1, 1.0 / 255.0);
+    ReadMnist::train_label(Range(0,2000), Range::all()).convertTo(this->m_train_label, CV_32FC1, 1.0);
     ReadMnist::test_img(Range(0,1000), Range::all()).convertTo(this->m_test_img, CV_32FC1, 1.0 / 255.0);
     ReadMnist::test_label(Range(0,1000), Range::all()).convertTo(this->m_test_label, CV_32FC1, 1.0);
 
@@ -40,9 +40,28 @@ void RecKnn::train()
 void RecKnn::test()
 {
     float ret;
-    for (int i = 0; i < 100; i++)
+    int rate = 0;
+    for (int i = 0; i < 1000; i++)
     {
-        ret = m_knn->find_nearest(m_test_img.row(i), 3);
-        cout<<"label:"<<m_test_label.at<float>(i, 0)<<"\t"<<"result:"<<ret<<endl;
+        ret = m_knn->find_nearest(m_test_img.row(i), 5);
+//        cout<<"label:"<<m_test_label.at<float>(i, 0)<<"\t"<<"result:"<<ret<<endl;
+        if (abs(ret - m_test_label.at<float>(i, 0)) < 0.0001)
+            rate++;
     }
+    cout<<"Pass rate is: "<<(rate/10.0)<<"%"<<endl;
+}
+
+int RecKnn::classcify( const Mat &img_src )
+{
+    //reshape the image
+    Mat img_test;
+    resize(img_src, img_test, Size(28, 28));
+    img_test = img_test.reshape(0, 1);
+
+    Mat img_classify;
+    img_test.convertTo(img_classify, CV_32FC1, 1.0 / 255.0);
+
+    float ret = m_knn->find_nearest(img_classify, 5);
+
+    return cvRound(ret);
 }
