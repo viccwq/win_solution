@@ -14,3 +14,6 @@ medical CT image segment, and build a 3D surface mesh with the volume data
 ### written_rec    
 hand write character recognize base on SVM    
 ![](https://raw.githubusercontent.com/viccwq/win_solution/master/screenshot/mnist_SVM.png)    
+
+hand write character recognize base on KNN    
+![](https://raw.githubusercontent.com/viccwq/win_solution/master/screenshot/write_knn.png)   
