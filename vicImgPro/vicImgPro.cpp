@@ -395,4 +395,127 @@ DLL_API void fillHole(const cv::Mat &src, cv::Mat &dst)
 	Temp(cv::Range(1, size.height + 1), cv::Range(1, size.width + 1)).copyTo(cutImg);  
 
 	dst = src | (~cutImg);  
-}  
+} 
+
+//http://blog.csdn.net/hujingshuang/article/details/47910949
+//http://blog.csdn.net/chongshangyunxiao321/article/details/51104462
+//单幅图像信息熵计算
+DLL_API double entropy(const Mat &img_src)
+{
+    double temp[256] = { 0.0 };
+    if (img_src.empty())
+    {
+        return -1.0;
+    }
+    int rows = img_src.rows;
+    int cols = img_src.cols;
+    if (img_src.isContinuous())
+    {
+        cols = rows * cols;
+        rows = 1;
+    }
+    // 计算每个像素的累积值
+    for (int m = 0; m < rows; m++)
+    {
+        const uchar* data = img_src.ptr<uchar>(m);
+        for (int n = 0; n < cols; n++)
+        {
+            int i = data[n];
+            temp[i] = temp[i] + 1;
+        }
+    }
+
+    // 计算每个像素的概率
+    int size = (cols * rows);
+    for (int i = 0; i < 256; i++)
+    {
+        temp[i] /= size;
+    }
+
+    double result = 0;
+    // 计算图像信息熵
+    const double log_2 =  log(2.0);
+    for (int i = 0; i < 256; i++)
+    {
+        if (temp[i] > 0.0)
+            result = result - temp[i] * (log(temp[i]) / log_2);
+    }
+    return result;
+
+}
+
+// 两幅图像联合信息熵计算
+DLL_API double comEntropy(const Mat &img_src1, const Mat &img_src2)
+{
+    double temp[256][256] = { 0.0 };
+    if (img_src1.empty() || img_src2.empty())
+    {
+        return -1.0;
+    }
+    if (img_src1.cols != img_src2.cols || 
+        img_src1.rows != img_src2.rows || 
+        img_src1.flags != img_src2.flags)
+    {
+        return -1.0;
+    }
+
+    int rows = img_src1.rows;
+    int cols = img_src1.cols;
+    if (img_src1.isContinuous())
+    {
+        cols = rows * cols;
+        rows = 1;
+    }
+    // 计算联合图像像素的累积值
+    for (int m = 0; m < rows; m++)
+    {    // 有效访问行列的方式
+        const uchar* data1 = img_src1.ptr<uchar>(m);
+        const uchar* data2 = img_src2.ptr<uchar>(m);
+        for (int n = 0; n < cols; n++)
+        {
+            int i = data1[n];
+            int j = data2[n];
+            temp[i][j] = temp[i][j] + 1.0;
+        }
+    }
+
+    // 计算每个联合像素的概率
+    int size = (cols * rows);
+    for (int i = 0; i < 256; i++)
+    {
+        for (int j = 0; j < 256; j++)
+        {
+            temp[i][j] = temp[i][j] / size;
+        }
+    }
+
+    double result = 0.0;
+    const double log_2 =  log(2.0);
+    //计算图像联合信息熵
+    for (int i = 0; i < 256; i++)
+    {
+        for (int j = 0; j < 256; j++)
+        {
+            if (temp[i][j] > 0.0)
+                result = result - temp[i][j] * (log(temp[i][j]) / log_2);
+        }
+    }
+
+    return result;
+
+}
+
+DLL_API double mutualInfo(const Mat &img_src1, const Mat &img_src2)
+{
+    double entropy_1 = entropy(img_src1);
+    double entropy_2 = entropy(img_src2);
+    double entropy_12 = comEntropy(img_src1, img_src2);
+    if (entropy_1 > 0.0 &&
+        entropy_2 > 0.0 &&
+        entropy_12 > 0.0)
+    {
+        return (entropy_1 + entropy_2 - entropy_12);
+    }
+    else
+        return -1.0;
+}

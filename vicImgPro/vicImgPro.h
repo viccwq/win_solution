@@ -68,3 +68,11 @@ DLL_API int getSizeContours(cv::Mat &img_src, cv::Mat &img_dst);
 DLL_API int getSizeContoursGray(cv::Mat &img_src, cv::Mat &img_dst, int area = 4, int y_min = 0, int y_max = 4000);
 
 DLL_API void fillHole(const cv::Mat &src, cv::Mat &dst);
+
+//µ¥·ùÍ¼ÏñÐÅÏ¢ìØ¼ÆËã
+DLL_API double entropy(const Mat &img_src);
+
+DLL_API double comEntropy(const Mat &img_src1, const Mat &img_src2);
+
+//¼ÆËãÍ¼ÏñµÄ»¥ÐÅÏ¢
+DLL_API double mutualInfo(const Mat &img_src1, const Mat &img_src2);
