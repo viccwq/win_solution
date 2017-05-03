@@ -2,6 +2,7 @@
 #include "pre_proc.hpp"
 #include "read_mnist_bin.h"
 #include "rec_knn.h"
+#include "feature_extra.h"
 
 extern int rec_svm();
 
@@ -97,6 +98,12 @@ int main()
 
     resizeWindow(" ÷–¥∞Â", 512, 512);
 
+    namedWindow("Input Image", WINDOW_NORMAL);
+    resizeWindow("Input Image", 120, 120);
+
+    namedWindow("spectrum magnitude", WINDOW_NORMAL);
+    resizeWindow("spectrum magnitude", 120, 120);
+
     //Create mouse CallBack
     setMouseCallback(" ÷–¥∞Â",&on_mouse, 0 );
     for(;;)
@@ -160,6 +167,10 @@ int main()
                 //revert the color
                 img = 255 - img;
                 img = ReadMnist::add_border(img);
+
+                Mat img_dft;
+                resize(img, img_dft, Size(28, 28));
+                feature_dft(img_dft);
                 cout<<rec_knn.classcify(img)<<endl;
             }
             break;
@@ -170,5 +181,8 @@ int main()
  
 
     destroyWindow(" ÷–¥∞Â");
+    destroyWindow("Input Image");
+
+    destroyWindow("spectrum magnitude");
     return 0;
 }

@@ -78,11 +78,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="comm_def_col.h" />
+    <ClInclude Include="feature_extra.h" />
     <ClInclude Include="pre_proc.hpp" />
     <ClInclude Include="read_mnist_bin.h" />
     <ClInclude Include="rec_knn.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="feature_extra.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pre_proc.cpp" />
     <ClCompile Include="rec_knn.cpp" />
