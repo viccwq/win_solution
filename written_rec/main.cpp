@@ -165,13 +165,18 @@ int main()
             {
                 Mat img = pre_process(g_img_draw);
                 //revert the color
-                img = 255 - img;
-                img = ReadMnist::add_border(img);
+                if (!img.empty())
+                {
+                    img = 255 - img;
+                    img = ReadMnist::add_border(img);
 
-                Mat img_dft;
-                resize(img, img_dft, Size(28, 28));
-                feature_dft(img_dft);
-                cout<<rec_knn.classcify(img)<<endl;
+                    vector<Point> edge = feature_edge(img);
+                    Mat img_draw(img.size(), CV_8U, Scalar(255, 255, 255));
+
+                    draw_points_8U(edge, 0, img_draw);
+                    imwrite("./Debug/contours2.bmp", img_draw);
+                    cout<<rec_knn.classcify(img)<<endl;               
+                }
             }
             break;
         default:

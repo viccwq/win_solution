@@ -59,3 +59,54 @@ Mat feature_dft( const Mat &img_src )
     return magI;
 }
 
+
+vector<Point> feature_edge(const Mat &img_src)
+{
+    if (img_src.empty())
+    {
+        return vector<Point>::vector(0);
+    }
+
+    Mat temp =  img_src.clone();
+    Mat result(img_src.size(), CV_8U, Scalar(255, 255,255));  
+
+    //检测的轮廓数组，每一个轮廓用一个point类型的vector表示
+    vector<vector<Point> > contours;
+    vector<Vec4i> hierarchy;
+    findContours(temp, contours, hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_NONE);
+    cout << contours.size() << endl;
+
+    //找出最大的轮廓
+    if( !contours.empty() && !hierarchy.empty() )
+    {
+        int idx = 0, idx_max = 0;
+        int size_max = 20;
+        for( ; idx >= 0; idx = hierarchy[idx][0] )
+        {
+            if (contours[idx].size() > size_max)
+            {
+                size_max = contours[idx].size();
+                idx_max = idx;
+            }
+        }
+//         drawContours(result, contours, idx_max, Scalar(0, 0, 0), 1, 8, hierarchy);
+//         imwrite("./Debug/contours.bmp", result);
+        return contours[idx_max];
+    }
+    else
+        return vector<Point>::vector(0);
+}
+
+int draw_points_8U(const vector<Point> &points, unsigned char val, Mat &img_dst)
+{
+    if (points.size() < 1 || img_dst.empty())
+    {
+        return -1;
+    }
+
+    for (int i = 0; i < points.size(); i++)
+    {
+        img_dst.at<uchar>(points[i]) = val;
+    }
+    return 0;
+}
