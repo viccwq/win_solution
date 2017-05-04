@@ -11,6 +11,18 @@
 #endif
 #include "cv_lib.h"
 
+#ifndef complex
+typedef struct my_complex 
+{
+    double x, y;
+} COMPLEX;
+#define complex COMPLEX
+#endif
+
+#ifndef PI
+#define PI 3.1415926
+#endif
+
 DLL_API int my_add(int x, int y);
 
 DLL_API void showImage(cv::Mat &image, int time, int flag = 0);
@@ -76,3 +88,39 @@ DLL_API double comEntropy(const Mat &img_src1, const Mat &img_src2);
 
 //计算图像的互信息
 DLL_API double mutualInfo(const Mat &img_src1, const Mat &img_src2);
+
+
+/****************************************
+ * Function:DFT( )
+ * Desc    :
+ *          
+ * Input   :
+ *          const T *r_in, 时域实部
+ *          const T *i_in, 时域虚部
+ *          const int N, 周期
+ * Output  :
+ *          double *r_out, 频域实部
+ *          double *i_out, 频域虚部
+ * Return  :
+ * NOTICE  :
+****************************************/
+template<typename T> 
+DLL_API int DFT(const T *r_in, const T *i_in, double *r_out, double *i_out, const int N);
+
+ 
+/****************************************
+ * Function:IDFT( )
+ * Desc    :
+ *          
+ * Input   :
+ *          const T *r_in, 频域实部
+ *          const T *i_in, 频域虚部
+ *          const int N, 周期
+ * Output  :
+ *          double *r_out, 时域实部
+ *          double *i_out, 时域虚部
+ * Return  :
+ * NOTICE  :
+****************************************/
+template<typename T>
+DLL_API int IDFT(const T *r_in, const T *i_in, double *r_out, double *i_out, const int N);

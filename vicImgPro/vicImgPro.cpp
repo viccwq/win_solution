@@ -519,3 +519,190 @@ DLL_API double mutualInfo(const Mat &img_src1, const Mat &img_src2)
     else
         return -1.0;
 }
+
+static complex comp_multi(const complex &a, const complex &b ) 
+{
+    complex tmp = {0.0, 0.0};
+    tmp.x = a.x*b.x - a.y*b.y;  
+    tmp.y = a.x*b.y + a.y*b.x;  
+    return tmp;  
+}
+
+static complex comp_add(const complex &a, const complex &b ) 
+{
+    complex tmp = {0.0, 0.0};
+    tmp.x = a.x + b.x;  
+    tmp.y = a.y + b.y;
+    return tmp;  
+}
+
+//reference
+//http://blog.csdn.net/calcular/article/details/46804779
+//http://blog.csdn.net/TonyShengTan/article/details/41178255
+//principle
+//http://www.cnblogs.com/amanlikethis/archive/2014/01/04/3505248.html
+//动态链接库中导出模板函数
+//http://blog.csdn.net/liyuanbhu/article/details/50363670
+
+template<typename T> 
+int DFT(const T *r_in, const T *i_in, double *r_out, double *i_out, const int N)
+{
+    if (NULL == r_in || NULL == r_out || NULL == i_out)
+    {
+        return -1;
+    }
+    //calculate WN
+    //WN = exp((-j * 2 * Pi / N) * k * n)
+    //k = 0, 1, ..., N-1
+    //n = 0, 1, ..., N-1
+    int size = (N - 1) * (N - 1) + 1;
+    complex *WN = new complex[size];
+    WN[0].x = 1;    //cos(0)
+    WN[0].y = 0;    //sin(0)
+    WN[1].x = cos(2.0 * PI / N);
+    WN[1].y = -1.0 * sin(2.0 * PI / N);
+    for(int i = 2; i < size; i++)
+    {  
+        WN[i] = comp_multi(WN[1], WN[i - 1]);
+    }
+
+    //fill W with WN
+    vector<vector<complex> > W(N, vector<complex>(N)); 
+    for(int i = 0; i < N; i++)
+    {  
+        for(int j = 0; j < N; j++)
+        {  
+            W[i][j] = WN[i*j];  
+        }  
+    }  
+    
+    //calculate
+    complex sum;
+
+    if (NULL != i_in)
+    {
+        for(int i = 0; i < N; i++)
+        {  
+            sum.x = 0;
+            sum.y = 0;  
+            for(int j = 0; j < N; j++)
+            {  
+                sum.x += (((T *)r_in)[j] * W[i][j].x -\
+                        ((T *)i_in)[j] * W[i][j].y);
+                sum.y += (((T *)r_in)[j] * W[i][j].y +\
+                        ((T *)i_in)[j] * W[i][j].x);
+            }
+            r_out[i] = sum.x;
+            i_out[i] = sum.y;
+        }
+    }
+    else
+    {
+        for(int i = 0; i < N; i++)
+        {  
+            sum.x = 0;
+            sum.y = 0;  
+            for(int j = 0; j < N; j++)
+            {  
+                sum.x += (((T *)r_in)[j] * W[i][j].x);
+                sum.y += (((T *)r_in)[j] * W[i][j].y);
+            }
+            r_out[i] = sum.x;
+            i_out[i] = sum.y;
+        }
+    }
+    delete []WN;
+    return 0;
+}
+
+
+template DLL_API int DFT(const int *r_in, const int *i_in, double *r_out, double *i_out, const int N);
+template DLL_API int DFT(const char *r_in, const char *i_in, double *r_out, double *i_out, const int N);
+template DLL_API int DFT(const short *r_in, const short *i_in, double *r_out, double *i_out, const int N);
+template DLL_API int DFT(const float *r_in, const float *i_in, double *r_out, double *i_out, const int N);
+template DLL_API int DFT(const double *r_in, const double *i_in, double *r_out, double *i_out, const int N);
+
+template DLL_API int DFT(const unsigned int *r_in, const unsigned int *i_in, double *r_out, double *i_out, const int N);
+template DLL_API int DFT(const unsigned char *r_in, const unsigned char *i_in, double *r_out, double *i_out, const int N);
+template DLL_API int DFT(const unsigned short *r_in, const unsigned short *i_in, double *r_out, double *i_out, const int N);
+
+template<typename T> 
+int IDFT(const T *r_in, const T *i_in, double *r_out, double *i_out, const int N)
+{
+    if (NULL == r_in || NULL == r_out || NULL == i_out)
+    {
+        return -1;
+    }
+    //calculate WN
+    //WN = exp((-j * 2 * Pi / N) * k * n)
+    //k = 0, 1, ..., N-1
+    //n = 0, 1, ..., N-1
+    int size = (N - 1) * (N - 1) + 1;
+    complex *WN = new complex[size];
+    WN[0].x = 1;    //cos(0)
+    WN[0].y = 0;    //sin(0)
+    WN[1].x = cos(2.0 * PI / N);
+    WN[1].y = sin(2.0 * PI / N);
+    for(int i = 2; i < size; i++)
+    {  
+        WN[i] = comp_multi(WN[1], WN[i - 1]);
+    }
+
+    //fill W with WN
+    vector<vector<complex> > W(N, vector<complex>(N)); 
+    for(int i = 0; i < N; i++)
+    {  
+        for(int j = 0; j < N; j++)
+        {  
+            W[i][j] = WN[i*j];  
+        }  
+    }  
+
+    //calculate
+    complex sum;
+
+    if (NULL != i_in)
+    {
+        for(int i = 0; i < N; i++)
+        {  
+            sum.x = 0;
+            sum.y = 0;  
+            for(int j = 0; j < N; j++)
+            {  
+                sum.x += (((T *)r_in)[j] * W[i][j].x -\
+                    ((T *)i_in)[j] * W[i][j].y);
+                sum.y += (((T *)r_in)[j] * W[i][j].y +\
+                    ((T *)i_in)[j] * W[i][j].x);
+            }
+            r_out[i] = sum.x / N;
+            i_out[i] = sum.y / N;
+        }
+    }
+    else
+    {
+        for(int i = 0; i < N; i++)
+        {  
+            sum.x = 0;
+            sum.y = 0;  
+            for(int j = 0; j < N; j++)
+            {  
+                sum.x += (((T *)r_in)[j] * W[i][j].x);
+                sum.y += (((T *)r_in)[j] * W[i][j].y);
+            }
+            r_out[i] = sum.x / N;
+            i_out[i] = sum.y / N;
+        }
+    }
+    delete []WN;
+    return 0;
+}
+
+template DLL_API int IDFT(const int *r_in, const int *i_in, double *r_out, double *i_out, const int N);
+template DLL_API int IDFT(const char *r_in, const char *i_in, double *r_out, double *i_out, const int N);
+template DLL_API int IDFT(const short *r_in, const short *i_in, double *r_out, double *i_out, const int N);
+template DLL_API int IDFT(const float *r_in, const float *i_in, double *r_out, double *i_out, const int N);
+template DLL_API int IDFT(const double *r_in, const double *i_in, double *r_out, double *i_out, const int N);
+
+template DLL_API int IDFT(const unsigned int *r_in, const unsigned int *i_in, double *r_out, double *i_out, const int N);
+template DLL_API int IDFT(const unsigned char *r_in, const unsigned char *i_in, double *r_out, double *i_out, const int N);
+template DLL_API int IDFT(const unsigned short *r_in, const unsigned short *i_in, double *r_out, double *i_out, const int N);
