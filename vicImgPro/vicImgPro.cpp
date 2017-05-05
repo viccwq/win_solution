@@ -706,3 +706,105 @@ template DLL_API int IDFT(const double *r_in, const double *i_in, double *r_out,
 template DLL_API int IDFT(const unsigned int *r_in, const unsigned int *i_in, double *r_out, double *i_out, const int N);
 template DLL_API int IDFT(const unsigned char *r_in, const unsigned char *i_in, double *r_out, double *i_out, const int N);
 template DLL_API int IDFT(const unsigned short *r_in, const unsigned short *i_in, double *r_out, double *i_out, const int N);
+
+//∏µ¿Ô“∂√Ë ˆ◊”
+//http://www.cnblogs.com/edie0902/p/3658174.html
+DLL_API int dftLowPass(const vector<Point> &point_in, const int N, const int n, vector<Point> &point_out)
+{
+    int ret = 0;
+    if (point_in.size() < 1 || N < 1)
+    {
+        return -1;
+    }
+
+    if (N < 2 * n)
+    {
+        return -1;
+    }
+
+    double *x_in = new double[N]();
+    double *y_in = new double[N]();
+    double *x_out = new double[N]();
+    double *y_out = new double[N]();
+
+    //import data
+    for (int i = 0; i < N; i++)
+    {
+        x_in[i] = static_cast<double>(point_in[i].x);
+        y_in[i] = static_cast<double>(point_in[i].y);
+    }
+
+    ret = DFT<double>(x_in, y_in, x_out, y_out, N);
+    //clear the height frequency
+    for (int i = (1 + n); i < (N - n); i++)
+    {
+        x_out[i] = 0.0;
+        y_out[i] = 0.0;
+    }
+
+    ret = IDFT<double>(x_out, y_out, x_in, y_in, N);
+    //export data
+    for (int i = 0; i < N; i++)
+    {
+        Point point;
+        point.x = static_cast<int>(x_in[i]);
+        point.y = static_cast<int>(y_in[i]);
+        point_out.push_back(point);
+    }
+
+    delete []x_in;
+    delete []y_in;
+    delete []x_out;
+    delete []y_out;
+    return 0;
+}
+
+DLL_API int dftFreqMagnitude(const vector<Point> &point_in, const int N, const int n, vector<double> &Mag)
+{
+    int ret = 0;
+    if (point_in.size() < 1 || N < 1)
+    {
+        return -1;
+    }
+
+    if (N < 2 * n)
+    {
+        return -1;
+    }
+
+    double *x_in = new double[N]();
+    double *y_in = new double[N]();
+    double *x_out = new double[N]();
+    double *y_out = new double[N]();
+
+    //import data
+    for (int i = 0; i < N; i++)
+    {
+        x_in[i] = static_cast<double>(point_in[i].x);
+        y_in[i] = static_cast<double>(point_in[i].y);
+    }
+
+    ret = DFT<double>(x_in, y_in, x_out, y_out, N);
+
+    Mat mat_r(Size(N, 1), CV_64F, x_out);
+    Mat mat_i(Size(N, 1), CV_64F, y_out);
+    multiply(mat_r, mat_r, mat_r);
+    multiply(mat_i, mat_i, mat_i);
+
+    mat_r = mat_r + mat_i;
+
+    for (int i = (N - n); i < N; i++)
+    {
+        Mag.push_back(sqrt(x_out[i]));
+    }
+    for (int i = 1; i < (n + 1); i++)
+    {
+        Mag.push_back(sqrt(x_out[i]));
+    }
+
+    delete []x_in;
+    delete []y_in;
+    delete []x_out;
+    delete []y_out;
+    return 0;
+}

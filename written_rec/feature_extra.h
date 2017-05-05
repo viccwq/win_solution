@@ -7,4 +7,7 @@ extern Mat feature_dft(const Mat &img_src);
 extern vector<Point> feature_edge(const Mat &img_src);
 
 extern int draw_points_8U(const vector<Point> &points, unsigned char val, Mat &img_dst);
+
+extern void open_close(const Mat &src, const int an, const int flag, Mat &dst);
+
 #endif

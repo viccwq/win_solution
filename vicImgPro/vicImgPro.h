@@ -124,3 +124,36 @@ DLL_API int DFT(const T *r_in, const T *i_in, double *r_out, double *i_out, cons
 ****************************************/
 template<typename T>
 DLL_API int IDFT(const T *r_in, const T *i_in, double *r_out, double *i_out, const int N);
+
+
+
+/****************************************
+ * Function:dftLowPass( )
+ * Desc    :DFT低通
+ *          
+ * Input   :
+ *          const vector<Point> &point_in, 时域输入
+ *          const int N, 周期
+ *          const int n, 低通分量实际数目为（2*n）,n>=1
+ * Output  :
+ *          vector<Point> &point_out, 时域输出
+ * Return  :
+ * NOTICE  :
+****************************************/
+DLL_API int dftLowPass(const vector<Point> &point_in, const int N, const int n, vector<Point> &point_out);
+
+
+/****************************************
+ * Function:dftFreqMagnitude( )
+ * Desc    :
+ *          
+ * Input   :
+ *          const vector<Point> &point_in, 
+ *          const int N, 
+ *          const int n, 低通分量实际数目为（2*n）,n>=1
+ * Output  :
+ *          vector<double> &Mag, 频域幅值
+ * Return  :
+ * NOTICE  :
+****************************************/
+DLL_API int dftFreqMagnitude(const vector<Point> &point_in, const int N, const int n, vector<double> &Mag);

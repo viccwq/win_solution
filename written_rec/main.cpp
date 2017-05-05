@@ -161,20 +161,83 @@ int main()
                 }
             }
             break;
-        case 'c':
+        case 'd':
             {
+                //remove the redundant border of the image
+                //and pad the image with same width and height
                 Mat img = pre_process(g_img_draw);
-                //revert the color
+                
                 if (!img.empty())
                 {
+                    //revert the color
                     img = 255 - img;
                     img = ReadMnist::add_border(img);
 
+                    open_close(img, 6, 1, img);
+                    //find the contours of the hand write
                     vector<Point> edge = feature_edge(img);
-                    Mat img_draw(img.size(), CV_8U, Scalar(255, 255, 255));
-
+                    Mat img_draw(img.size(), CV_8U, Scalar::all(255));
                     draw_points_8U(edge, 0, img_draw);
-                    imwrite("./Debug/contours2.bmp", img_draw);
+                    imwrite("./Debug/contours.bmp", img_draw);
+
+                    //选取不同数量的谐波分量
+                    for (int i = 0; i < 10; i++)
+                    {
+                        vector<Point> edge2;
+                        dftLowPass(edge, edge.size(), (i * 2 + 1), edge2);
+
+                        Mat img_draw2(img.size(), CV_8U, Scalar::all(255));
+                        draw_points_8U(edge2, 0, img_draw2);
+                        char file_name[128] = {0};
+                        sprintf(file_name, "./Debug/contours%02d.bmp", (i * 2 + 1));
+                        string str(file_name);   
+                        imwrite(str, img_draw2); 
+                    }
+
+                    //打印不同图像的低频分量
+#if defined(_DEBUG) && 1 
+                    {
+                        int len = 5;
+                        vector<double> mag;
+                        dftFreqMagnitude(edge, edge.size(), len, mag);
+                        
+                        //normalize the magnitude
+                        double max = mag[0], min = mag[0], delta = 0.0;
+                        for (int i = 0; i < mag.size(); i++)
+                        {
+                            if (mag[i] > max)
+                                max = mag[i];
+                            if (mag[i] < min)
+                                min = mag[i];
+                        }
+                        delta = max - min;
+                        for (int i = 0; i < mag.size(); i++)
+                        {
+                            mag[i] = (mag[i] - min)/delta;
+                            cout<<"\t"<<mag[i];
+                        }
+                        cout<<endl;                        
+
+                    }
+#endif // _DEBUG
+
+            
+                }
+            }
+            break;
+        case 'c':
+            {
+                //remove the redundant border of the image
+                //and pad the image with same width and height
+                Mat img = pre_process(g_img_draw);
+
+                if (!img.empty())
+                {
+                    //revert the color
+                    img = 255 - img;
+                    img = ReadMnist::add_border(img);
+
+                    open_close(img, 7, 1, img);
                     cout<<rec_knn.classcify(img)<<endl;               
                 }
             }

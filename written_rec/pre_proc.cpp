@@ -138,14 +138,14 @@ Mat pre_process(const Mat &img_src)
 
     //convert the image to a square
     img_gray = img_gray(rect).clone();
-    if ((img_gray.rows - img_gray.cols) > 2)
+    if ((img_gray.rows - img_gray.cols) > 0)
     {
         int m = (img_gray.rows - img_gray.cols) / 2;
         int k = (img_gray.rows - img_gray.cols) % 2;
         copyMakeBorder(img_gray, img_dst, 0, 0, m, m + k,\
             BORDER_CONSTANT, Scalar::all(255));
     }
-    else if ((img_gray.cols - img_gray.rows) > 2)
+    else if ((img_gray.cols - img_gray.rows) > 0)
     {
         int m = (img_gray.cols - img_gray.rows) / 2;
         int k = (img_gray.cols - img_gray.rows) % 2;

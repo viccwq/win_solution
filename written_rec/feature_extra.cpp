@@ -110,3 +110,15 @@ int draw_points_8U(const vector<Point> &points, unsigned char val, Mat &img_dst)
     }
     return 0;
 }
+
+
+void open_close(const Mat &src, const int an, const int flag, Mat &dst)
+{
+//     int element_shape = MORPH_RECT;
+    int element_shape = MORPH_ELLIPSE;
+    Mat element = getStructuringElement(element_shape, Size(an*2+1, an*2+1), Point(an, an));
+    if( flag == 0 )
+        morphologyEx(src, dst, CV_MOP_OPEN, element);
+    else
+        morphologyEx(src, dst, CV_MOP_CLOSE, element);
+}
