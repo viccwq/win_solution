@@ -7,6 +7,7 @@ extern int ffilldemmo();
 extern int geom_trans(const string file_name);
 extern void vic_resize();
 extern int tutorial_dft();
+extern void surf_resigtration();
 
 void lib_test_DFT()
 {
@@ -48,7 +49,8 @@ int main()
 //     geom_trans("");
 //    vic_resize();
 //    tutorial_dft();
-    lib_test_DFT();
+//    lib_test_DFT();
+    surf_resigtration();
     system("pause");
     return 0;
 }

@@ -76,8 +76,7 @@ int cutSport(const Mat &src, Mat &dst)
 {
     Mat mat;
     mat = estimateRigidTransform(frame1_features_ok, frame2_features_ok, true);
-    warpAffine(src, dst, mat, Size(2,3));
-
+    warpAffine(src, dst, mat, src.size());
     imshow("dst", dst);
     return 0;
 }
@@ -91,4 +90,5 @@ void surf_resigtration()
     Mat dst;
     getMatcher(src1, src2);
     cutSport(src1, dst);
+    waitKey();
 }
