@@ -78,9 +78,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="comm_def_col.h" />
+    <ClInclude Include="cv2_10_videoproc.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="adaptive_thresh.cpp" />
+    <ClCompile Include="cv2_10_videoproc.cpp" />
     <ClCompile Include="surf_registration.cpp" />
     <ClCompile Include="tutorial_dft.cpp" />
     <ClCompile Include="ffilldemo.cpp" />

@@ -9,6 +9,10 @@ extern void vic_resize();
 extern int tutorial_dft();
 extern void surf_resigtration();
 
+//////////////////////////////////////////////////////////////////////////
+extern int open_video_file(const string file);
+extern void cv2_10_videoprocess(void);
+
 void lib_test_DFT()
 {
     int a[12] = {1, 2, 3, 4, 5, 6, 20, 40, 0, -2, -5, 10};
@@ -50,7 +54,9 @@ int main()
 //    vic_resize();
 //    tutorial_dft();
 //    lib_test_DFT();
-    surf_resigtration();
+//    surf_resigtration();
+//     open_video_file("./Debug/bike.avi");
+    cv2_10_videoprocess();
     system("pause");
     return 0;
 }

@@ -13,10 +13,16 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="CV2 CookBook">
+      <UniqueIdentifier>{b61fa841-63aa-473c-8772-843df93d2463}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="comm_def_col.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cv2_10_videoproc.h">
+      <Filter>CV2 CookBook</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -46,6 +52,9 @@
     </ClCompile>
     <ClCompile Include="surf_registration.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cv2_10_videoproc.cpp">
+      <Filter>CV2 CookBook</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
