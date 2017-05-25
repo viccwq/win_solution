@@ -13,6 +13,36 @@ bool VideoProc::setInput(string filename)
 
     return m_capture.open(filename);
 }
+//设置输出视频
+bool VideoProc::setOutput( const string &filename, int codec)
+{
+    union code
+    {
+        int val;
+        char ch[4];
+    } ret_codec;
+
+    if (codec == 0)
+    {
+        ret_codec.val = static_cast<int>(m_capture.get(CV_CAP_PROP_FOURCC));
+    }
+    else
+    {
+        ret_codec.val = codec;
+    }
+    cout<<"Codec:"\
+        <<ret_codec.ch[0]\
+        <<ret_codec.ch[1]\
+        <<ret_codec.ch[2]\
+        <<ret_codec.ch[3]<<endl;
+
+    double fps = static_cast<double>(m_capture.get(CV_CAP_PROP_FPS));
+    Size size;
+    size.height = static_cast<int>(m_capture.get(CV_CAP_PROP_FRAME_HEIGHT));
+    size.width = static_cast<int>(m_capture.get(CV_CAP_PROP_FRAME_WIDTH));
+
+    return m_witer.open(filename, codec, fps, size);
+}
 
 //设置延时
 void VideoProc::setFrameRate( int ms )
@@ -73,6 +103,13 @@ void VideoProc::run()
         {
             frame_out = frame;
         }
+        //输出图像序列
+        if (frame_out.channels() == 1)
+        {
+ //           cvtColor(img, cimg, CV_GRAY2RGB);
+            cvtColor(frame_out, frame_out, CV_GRAY2RGB);
+        }
+        m_witer.write(frame_out);
         imshow(m_winNameOutput, frame_out);
 
         if (m_delay >=0 && waitKey(m_delay) >= 0)
@@ -81,12 +118,15 @@ void VideoProc::run()
         }
     }
     m_capture.release();
+    m_witer.release();
 }
 //是否调用回调函数
 void VideoProc::setFrameProcessorEnable( bool en )
 {
     m_callIt = en;
 }
+
+
 
 int open_video_file(const string file)
 {
@@ -143,6 +183,8 @@ void cv2_10_videoprocess(void)
 
     videoProc.setFrameProcessor(canny);
     videoProc.setFrameProcessorEnable(true);
+
+    videoProc.setOutput("./Debug/bike2.avi", CV_FOURCC('M', 'J', 'P', 'G'));
 
     videoProc.run();
     videoProc.displayClear();

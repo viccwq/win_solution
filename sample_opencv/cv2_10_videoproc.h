@@ -11,6 +11,7 @@ public:
     void setFrameProcessor(void(*frameProcessCallBack)(Mat &, Mat &));
     void setFrameProcessorEnable(bool en);
     bool setInput(string filename);
+    bool setOutput(const string &filename, int codec = 0);
     void setFrameRate(int ms);
     void displayInput(string wn);
     void displayOutput(string wn);
@@ -20,6 +21,7 @@ public:
 protected:
 private:
     VideoCapture m_capture;
+    VideoWriter m_witer;
     //回调函数
     void(*process)(Mat &, Mat &);
     //回调标志
