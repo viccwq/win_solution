@@ -8,10 +8,12 @@ extern int geom_trans(const string file_name);
 extern void vic_resize();
 extern int tutorial_dft();
 extern void surf_resigtration();
+extern int lkdemo();
 
 //////////////////////////////////////////////////////////////////////////
 extern int open_video_file(const string file);
 extern void cv2_10_videoprocess(void);
+extern void cv2_10_freaturetracker(void);
 
 void lib_test_DFT()
 {
@@ -57,6 +59,7 @@ int main()
 //    surf_resigtration();
 //     open_video_file("./Debug/bike.avi");
     cv2_10_videoprocess();
+//     lkdemo();
     system("pause");
     return 0;
 }

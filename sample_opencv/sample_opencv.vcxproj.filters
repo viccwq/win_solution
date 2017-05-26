@@ -56,5 +56,8 @@
     <ClCompile Include="cv2_10_videoproc.cpp">
       <Filter>CV2 CookBook</Filter>
     </ClCompile>
+    <ClCompile Include="lkdemo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

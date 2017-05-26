@@ -83,6 +83,7 @@
   <ItemGroup>
     <ClCompile Include="adaptive_thresh.cpp" />
     <ClCompile Include="cv2_10_videoproc.cpp" />
+    <ClCompile Include="lkdemo.cpp" />
     <ClCompile Include="surf_registration.cpp" />
     <ClCompile Include="tutorial_dft.cpp" />
     <ClCompile Include="ffilldemo.cpp" />

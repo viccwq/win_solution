@@ -189,3 +189,75 @@ void cv2_10_videoprocess(void)
     videoProc.run();
     videoProc.displayClear();
 }
+
+void FeatureTraker::porcess( Mat &src, Mat &dst )
+{
+    src.copyTo(dst);
+    cvtColor(src, m_gray, CV_BGR2GRAY);
+
+    //m_point_prev添加特征点
+    if (m_point_prev.size() <= 10)
+    {
+        m_features.clear();
+        goodFeaturesToTrack(m_gray, m_features, m_max_count, m_qlevel, m_min_dist);
+        m_point_prev.insert(m_point_prev.end(), m_features.begin(), m_features.end());
+        m_initial.insert(m_initial.end(), m_features.begin(), m_features.end());
+    }
+
+    if (m_gray_prev.empty())
+    {
+        m_gray.copyTo(m_gray_prev);
+    }
+    //跟踪特征点
+    calcOpticalFlowPyrLK(
+        m_gray_prev, m_gray,
+        m_point_prev,
+        m_point,
+        m_status,
+        m_error);
+
+    //筛选所有跟踪点
+    int k = 0;
+    for (int i = 0; i < m_point.size(); i++)
+    {
+        //保留相关特征点
+        bool ret = m_status[i] && (abs(m_point_prev[i].x - m_point[i].x) + abs(m_point_prev[i].y - m_point[i].y)) > 2;
+        if (ret)
+        {
+            m_initial[k] = m_initial[i];
+            m_point[k] = m_point[i];
+            k++;
+        }
+    }
+    //去除不成功的点
+    m_initial.resize(k);
+    m_point.resize(k);
+
+    //处理接受的跟踪点
+    for (int i = 0, k = 0; i < m_point.size(); i++)
+    {
+        line(dst, m_initial[i], m_point[i], Scalar(0, 255, 0));
+        circle(dst, m_point[i], 3, Scalar(255, 0, 0), -1);
+    }
+    swap(m_point_prev, m_point);
+    swap(m_gray_prev, m_gray);
+}
+
+/*
+void cv2_10_freaturetracker(void)
+{
+    FeatureTraker featTracker;
+    VideoProc videoProc;
+    videoProc.setInput("./Debug/bike.avi");
+    videoProc.displayInput("current frame");
+    videoProc.displayOutput("output frame");
+    videoProc.setFrameRate(1000);
+
+    videoProc.setFrameProcessor(&featTracker::porcess);
+    videoProc.setFrameProcessorEnable(true);
+
+    videoProc.setOutput("./Debug/bike2.avi", CV_FOURCC('M', 'J', 'P', 'G'));
+
+    videoProc.run();
+    videoProc.displayClear();
+}*/
