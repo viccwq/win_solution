@@ -3,8 +3,16 @@
 //设置回调函数
 void VideoProc::setFrameProcessor(void(*frameProcessCallBack)(Mat &, Mat &))
 {
+    frameProcessor = NULL;
     process = frameProcessCallBack;
 }
+
+void VideoProc::setFrameProcessor( FrameProcessor *frameProcessorPtr)
+{
+    process = NULL;
+    frameProcessor = frameProcessorPtr;
+}
+
 //设置视频的名称
 bool VideoProc::setInput(string filename)
 {
@@ -96,7 +104,10 @@ void VideoProc::run()
         //处理当前帧并显示
         if (m_callIt)
         {
-            process(frame, frame_out);
+            if (process)
+                process(frame, frame_out);
+            else if (frameProcessor)
+                frameProcessor->process(frame, frame_out);
             m_fnumber++;
         }
         else
@@ -190,7 +201,7 @@ void cv2_10_videoprocess(void)
     videoProc.displayClear();
 }
 
-void FeatureTraker::porcess( Mat &src, Mat &dst )
+void FeatureTraker::process( Mat &src, Mat &dst )
 {
     src.copyTo(dst);
     cvtColor(src, m_gray, CV_BGR2GRAY);
@@ -237,13 +248,13 @@ void FeatureTraker::porcess( Mat &src, Mat &dst )
     for (int i = 0, k = 0; i < m_point.size(); i++)
     {
         line(dst, m_initial[i], m_point[i], Scalar(0, 255, 0));
-        circle(dst, m_point[i], 3, Scalar(255, 0, 0), -1);
+        circle(dst, m_point[i], 3, Scalar(0, 0, 255), -1);
     }
     swap(m_point_prev, m_point);
     swap(m_gray_prev, m_gray);
 }
 
-/*
+
 void cv2_10_freaturetracker(void)
 {
     FeatureTraker featTracker;
@@ -253,11 +264,11 @@ void cv2_10_freaturetracker(void)
     videoProc.displayOutput("output frame");
     videoProc.setFrameRate(1000);
 
-    videoProc.setFrameProcessor(&featTracker::porcess);
+    videoProc.setFrameProcessor(&featTracker);
     videoProc.setFrameProcessorEnable(true);
 
     videoProc.setOutput("./Debug/bike2.avi", CV_FOURCC('M', 'J', 'P', 'G'));
 
     videoProc.run();
     videoProc.displayClear();
-}*/
+}

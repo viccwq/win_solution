@@ -58,7 +58,8 @@ int main()
 //    lib_test_DFT();
 //    surf_resigtration();
 //     open_video_file("./Debug/bike.avi");
-    cv2_10_videoprocess();
+//     cv2_10_videoprocess();
+    cv2_10_freaturetracker();
 //     lkdemo();
     system("pause");
     return 0;

@@ -2,13 +2,21 @@
 #define _CV2_10_VIDEOPROC_H
 #include "comm_def_col.h"
 
+class FrameProcessor
+{
+public:
+    virtual void process(Mat &src, Mat &dst) = 0;
+protected:
+private:
+};
 
 class VideoProc
 {
 public:
-    VideoProc():m_callIt(true),m_delay(0),m_fnumber(0)
+    VideoProc():m_callIt(true),m_delay(0),m_fnumber(0),process(0),frameProcessor(0)
     {}
     void setFrameProcessor(void(*frameProcessCallBack)(Mat &, Mat &));
+    void setFrameProcessor(FrameProcessor *frameProcessorPtr);
     void setFrameProcessorEnable(bool en);
     bool setInput(string filename);
     bool setOutput(const string &filename, int codec = 0);
@@ -24,6 +32,8 @@ private:
     VideoWriter m_witer;
     //回调函数
     void(*process)(Mat &, Mat &);
+    // the FrameProcessor interface
+    FrameProcessor *frameProcessor;
     //回调标志
     bool m_callIt;
     //窗口
@@ -31,17 +41,16 @@ private:
     string m_winNameOutput;
 
     int m_delay;
-    long m_fnumber;
-  
+    long m_fnumber; 
     
 };
 
 
-class FeatureTraker
+class FeatureTraker:public FrameProcessor
 {
 public:
     FeatureTraker():m_max_count(500),m_qlevel(0.01),m_min_dist(10.){}
-    void porcess(Mat &src, Mat &dst);
+    void process(Mat &src, Mat &dst);
 private:
     Mat m_gray;
     Mat m_gray_prev;

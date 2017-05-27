@@ -17,3 +17,7 @@ hand write character recognize base on SVM
 
 hand write character recognize base on KNN    
 ![](https://raw.githubusercontent.com/viccwq/win_solution/master/screenshot/write_knn.png)   
+
+### sample_opencv    
+#### 1) video tracker    
+![](https://raw.githubusercontent.com/viccwq/win_solution/master/screenshot/videoTrack.jpg)   
